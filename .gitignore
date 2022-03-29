@@ -1,0 +1,4 @@
+.venv/
+uweflixapp/__pycache__/
+uweflixmain/__pycache__/
+uweflixapp/migrations/__pycache__/
