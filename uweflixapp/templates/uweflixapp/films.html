@@ -1,0 +1,50 @@
+{% extends 'uweflixapp/main.html' %}
+
+
+{% block content %}
+
+        <br>
+
+        
+        
+
+		<div class="row">
+			<div class="col-md">
+				<div class="card card-body">
+					<h5>Films</h5>
+				</div>
+				<div class="card card-body">
+					<table class="table">
+						<tr>
+							<th>Film</th>
+							<th>Age Rating</th>
+							<th>Description</th>
+						</tr>
+
+                        {% for i in films %}
+							<tr>
+								<td>{{i.title}}</td>
+								<td>{{i.age_rating}}</td>
+								<td>{{i.description}}</td>
+								<td><a class="btn btn-sm btn-info" href="">Update</a></td>
+								<td><a class="btn btn-sm btn-danger" href="{% url 'delete_film' i.id %}">Delete</a></td>
+							</tr>	
+						{% endfor %}
+
+						
+					</table>
+				</div>
+			</div>
+			
+		</div>
+
+
+        <div class="row">
+            <div class="col-md">
+                <div class="card card-body">
+                    <a class="btn btn-outline-info  btn-sm btn-block" href="{% url 'add_film' %}">Add Film</a>
+        
+                </div>
+            </div>
+
+{%  endblock %}

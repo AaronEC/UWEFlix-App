@@ -28,6 +28,9 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+# SESSION AGE 5 Minutes # https://stackoverflow.com/questions/14830669/how-to-expire-django-session-in-5minutes
+SESSION_COOKIE_AGE = 1*60
+
 
 # Application definition
 
@@ -39,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'uweflixapp',
+    'django_filters',
 ]
 
 MIDDLEWARE = [

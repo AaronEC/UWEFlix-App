@@ -1,42 +1,146 @@
-from http.client import ImproperConnectionState
-from django.db import IntegrityError
+import imp
+from urllib import request
 from django.shortcuts import render, redirect
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
-from django.contrib.auth.models import User
+from django.http import HttpResponse
+from django.forms import inlineformset_factory
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
-from django.db import IntegrityError
 
-def Home(request):
-    return render(request, 'index.html')
+from django.contrib.auth.decorators import login_required
 
-def signnewuser(request):
-    if request.method=="POST":
-        if request.POST.get('password1') == request.POST.get('password2'):
-            try:
-                saveuser=User.objects.create_user(request.POST.get('username'), password=request.POST.get('password1'))
-                saveuser.save()
-                return render(request, 'signup.html', {'form': UserCreationForm(), 'info': 'The User '+request.POST.get('username')+' is saved successfully'})
-            except IntegrityError:
-                return render(request, 'signup.html', {'form': UserCreationForm(), 'info': 'The User '+request.POST.get('username')+' already exists..'})
-        else:
-            return render(request, 'signup.html', {'form': UserCreationForm(), 'error': 'The passwords are not matching'})
+# Create your views here.
+from .models import *
+from .forms import ClubForm, ShowingForm, FilmForm, CreateUserForm
+from .filters import FilmFilter
 
+# registers users
+def registerPage(request):
+    if request.user.is_authenticated:
+        return redirect('home')
     else:
-        return render(request, 'signup.html', {'form': UserCreationForm})
+        form = CreateUserForm()
+        if request.method == 'POST':
+            form = CreateUserForm(request.POST)
 
+            if form.is_valid():
+                user = form.save()
+                user.is_active = False
+                user.save()
+                user = form.cleaned_data.get('username')
+                messages.success(request, 'Acount was created for ' + user)
 
-def loginuser(request):
-    if request.method=="POST":
-        loginsuccess=authenticate(request,username=request.POST.get('username'), password=request.POST.get('password'))
-        if loginsuccess is None:
-            return render(request, 'login.html', {'form': AuthenticationForm(), 'error': 'The username & password are wrong'})
-        else:
-            login(request,loginsuccess)
-            return redirect('welcomepage')
+                return redirect('login')
+
+        context = {'form':form}
+        return render(request, 'uweflixapp/register.html', context)
+
+# logs in users
+def loginPage(request):
+    if request.user.is_authenticated:
+        return redirect('home')
     else:
-        return render(request, 'login.html', {'form': AuthenticationForm()})
+        if request.method == 'POST':
+            username = request.POST.get('username')
+            password =request.POST.get('password')
 
-def logoutpage(request):
-    if request.method=="POST":
-        logout(request)
-        return redirect('loginuser')
+            user = authenticate(request, username=username, password=password)
+            
+            if user is not None:
+                login(request, user)
+                return redirect('home')
+            else:
+                messages.info(request, 'Username OR password is incorrect')
+
+        context = {}
+        return render(request, 'uweflixapp/login.html', context)
+
+# logs out user
+def logoutUser(request):
+    logout(request)
+    return redirect('login')
+
+# returns home url
+def home(request):
+
+    return render(request, 'uweflixapp/clubs.html')
+
+# adds film
+def addFilm(request):
+    form = FilmForm()
+    if request.method == 'POST':
+        form = FilmForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('films')
+
+    context = {'form':form}
+    return render(request, 'uweflixapp/film_form.html', context)
+
+# adds showing
+def addShowing(request):
+    form = ShowingForm()
+    if request.method == 'POST':
+        form = ShowingForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('showings')
+
+    context = {'form':form}
+    return render(request, 'uweflixapp/showing_form.html', context)
+
+# adds club
+def addClub(request):
+    form = ClubForm()
+    if request.method == 'POST':
+        form = ClubForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('clubs')
+
+    context = {'form':form}
+    return render(request, 'uweflixapp/club_form.html', context)
+
+# returns films
+def films(request):
+    films = Film.objects.all()
+    return render(request, 'uweflixapp/films.html', {'films': films})
+
+# returns users not approved yet
+def customer(request):
+    customer = Customer.objects.all()
+    return render(request, 'uweflixapp/customer.html', {'customer': customer})
+
+# # returns showings
+def showings(request):
+    showings = Showing.objects.all()
+    return render(request, 'uweflixapp/showings.html', {'showings': showings})
+
+# returns university clubs
+def clubs(request):
+    clubs = UniversityClub.objects.all()
+    return render(request, 'uweflixapp/clubs.html', {'clubs': clubs})
+
+# returns future showings
+def viewShowings(request):
+    films = Film.objects.all()
+    return render(request, 'uweflixapp/booking.html', {'films': films})
+
+# selects showing and returns details of showing
+def selectShowing(request):
+
+    return
+
+
+# deletes film
+def deletesFilm(request, pk):
+    film = Film.objects.get(id=pk)
+
+    if request.method == "POST":
+        film.delete()
+        return redirect('/')
+
+    context = {'film':film}
+    return render(request, 'uweflixapp/delete.html', context)
+
+
