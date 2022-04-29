@@ -4,9 +4,8 @@ from django_filters import DateFilter, CharFilter
 
 from .models import *
 
-class FilmFilter(django_filters.FilterSet):
-
-
+class ShowFilter(django_filters.FilterSet):
     class Meta:
-        model = Film
+        model = Showing
         fields = '__all__'
+        exclude = ['film', 'time', 'screen']

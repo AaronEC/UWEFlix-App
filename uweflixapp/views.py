@@ -12,7 +12,7 @@ from django.contrib.auth.decorators import login_required
 # Create your views here.
 from .models import *
 from .forms import ScreenForm, ClubForm, ShowingForm, FilmForm, CreateUserForm
-from .filters import FilmFilter
+from .filters import ShowFilter
 
 # registers users
 def registerPage(request):
@@ -143,7 +143,12 @@ def clubs(request):
 # returns future showings
 def viewShowings(request):
     showings = Showing.objects.all()
-    return render(request, 'uweflixapp/view_showings.html', {'showings': showings})
+
+    myFilter = ShowFilter(request.GET, queryset=showings)
+    showings = myFilter.qs
+
+    context = {'showings':showings, 'myFilter':myFilter}
+    return render(request, 'uweflixapp/view_showings.html', context)
 
 # selects showing and returns details of showing
 def selectShowing(request):
