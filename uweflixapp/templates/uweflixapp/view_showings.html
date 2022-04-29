@@ -5,6 +5,10 @@
 
         <br>
 
+        <form method="get">
+            {{ myFilter.form }}
+        </form>
+
 		<div class="row">
 			<div class="col-md">
 				<div class="card card-body">
@@ -26,8 +30,7 @@
 								<td>{{i.date}}</td>
 								<td>{{i.time}}</td>
 								<td>{{i.screen}}</td>
-								<td><a class="btn btn-sm btn-info" href="">Update</a></td>
-								<td><a class="btn btn-sm btn-danger" href="">Delete</a></td>
+								<td><a class="btn btn-sm btn-info" href="">Select</a></td>
 
 							</tr>	
 						{% endfor %}
@@ -38,13 +41,5 @@
 			</div>
 			
 		</div>
-
-        <div class="row">
-            <div class="col-md">
-                <div class="card card-body">
-                    <a class="btn btn-outline-info  btn-sm btn-block" href="{% url 'add_showing' %}">Add Showing</a>
-        
-                </div>
-            </div>
 
 {%  endblock %}

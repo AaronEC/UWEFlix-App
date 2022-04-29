@@ -5,13 +5,13 @@ from django.http import HttpResponse
 from django.forms import inlineformset_factory
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import authenticate, login, logout, get_user_model
 
 from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 from .models import *
-from .forms import ClubForm, ShowingForm, FilmForm, CreateUserForm
+from .forms import ScreenForm, ClubForm, ShowingForm, FilmForm, CreateUserForm
 from .filters import FilmFilter
 
 # registers users
@@ -101,14 +101,33 @@ def addClub(request):
     context = {'form':form}
     return render(request, 'uweflixapp/club_form.html', context)
 
+# adds screen
+def addScreen(request):
+    form = ScreenForm()
+    if request.method == 'POST':
+        form = ScreenForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('screens')
+
+    context = {'form':form}
+    return render(request, 'uweflixapp/screen_form.html', context)
+
 # returns films
 def films(request):
     films = Film.objects.all()
     return render(request, 'uweflixapp/films.html', {'films': films})
 
+# returns screens
+def screens(request):
+    screens = Screen.objects.all()
+    return render(request, 'uweflixapp/screens.html', {'screens': screens})
+
 # returns users not approved yet
 def customer(request):
-    customer = Customer.objects.all()
+    #customer = Customer.objects.all()
+    User = get_user_model()
+    customer = User.objects.all()
     return render(request, 'uweflixapp/customer.html', {'customer': customer})
 
 # # returns showings
@@ -123,8 +142,8 @@ def clubs(request):
 
 # returns future showings
 def viewShowings(request):
-    films = Film.objects.all()
-    return render(request, 'uweflixapp/booking.html', {'films': films})
+    showings = Showing.objects.all()
+    return render(request, 'uweflixapp/view_showings.html', {'showings': showings})
 
 # selects showing and returns details of showing
 def selectShowing(request):
@@ -142,5 +161,23 @@ def deletesFilm(request, pk):
 
     context = {'film':film}
     return render(request, 'uweflixapp/delete.html', context)
+
+
+# modify film
+def modifyFilm():
+    return
+
+# create booking
+def createBooking():
+    return
+
+# cancel Booking
+def cancelBooking():
+    return
+
+# toggle social distancing
+def toggledistancing():
+    return
+
 
 

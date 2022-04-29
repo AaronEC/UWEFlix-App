@@ -2,6 +2,20 @@ from tkinter import CASCADE
 from unicodedata import name
 from django.db import models
 
+""" class User(AbstractUser):
+      CINEMA_MANAGER = 1
+      ACCOUNT_MANAGER = 2
+      CLUB_REPRESENTATIVE = 3
+      STUDENT = 4
+
+      ROLE_CHOICES = (
+          (CINEMA_MANAGER, 'Cinema Manager'),
+          (ACCOUNT_MANAGER, 'Account Manager'),
+          (CLUB_REPRESENTATIVE, 'Club Representative'),
+          (STUDENT, 'Student'),
+      )
+      role = models.PositiveSmallIntegerField(choices=ROLE_CHOICES, blank=True, null=True) """
+
 # Create your models here.
 class Customer(models.Model):
     name = models.CharField(max_length=50, null=True)
@@ -55,8 +69,8 @@ class Film(models.Model):
         return self.title
 
 class Screen(models.Model):
-    screen_id = models.IntegerField()
-    seats = models.IntegerField()
+    screen_id = models.CharField(max_length=50, null=False, blank=False)
+    seats = models.IntegerField(null=False)
 
     def __str__(self):
         return self.screen_id
@@ -83,8 +97,18 @@ class Account(models.Model):
 
 
 class Booking(models.Model):
+    """ TICKET_TYPE  = (
+        ('Child', 'Child'),
+        ('Adult', 'Adult'),
+        ('Student', 'Student'),
+    )
+ """
     auto_increment_id = models.AutoField(primary_key=True)
     ticket_quantity = models.IntegerField(null=False)
+    #ticketType = models.CharField(blank=False, null=False, max_length=7, choices=TICKET_TYPE, default='string')
+    adult_ticket = models.IntegerField()
+    child_ticket = models.IntegerField()
+    student_ticket = models.IntegerField()
     total_cost = models.IntegerField(null=False)
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE, null=False)
     showing = models.ForeignKey(Showing, on_delete=models.CASCADE, null=False)
