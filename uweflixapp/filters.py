@@ -1,11 +1,17 @@
 from csv import excel
+from django import forms
+from django.forms import DateInput
 import django_filters
 from django_filters import DateFilter, CharFilter
 
 from .models import *
 
 class ShowFilter(django_filters.FilterSet):
+
+    date = django_filters.DateFilter(widget=DateInput(attrs={'type': 'date'}))
+
     class Meta:
         model = Showing
-        fields = '__all__'
-        exclude = ['film', 'time', 'screen']
+        fields = ['date']
+        #exclude = ['film', 'time', 'screen']
+

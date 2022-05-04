@@ -19,10 +19,14 @@ urlpatterns = [
     path('add_showing/', views.addShowing, name="add_showing"),
     path('add_club/', views.addClub, name="add_club"),
     path('add_screen/', views.addScreen, name="add_screen"),
+    path('approve_user/<str:pk>/', views.approveUser, name="approve_user"),
     path('delete_film/<str:pk>/', views.deletesFilm, name="delete_film"),
+    path('modify_film/<str:pk>/', views.modifyFilm, name="modify_film"),
 
     path('view_showings/', views.viewShowings, name="view_showings"),
-    path('select_showing/', views.selectShowing, name="select_showing"),
+    path('select_showing/<str:pk>/', views.selectShowing, name="select_showing"),
+    
+    path('view_transactions/', views.viewTransactions, name="view_transactions"),
 
     #path('create_booking/', views.createBooking, name="create_booking"),
     #path('cancel_booking/', views.cancelBooking, name="cancel_booking"),

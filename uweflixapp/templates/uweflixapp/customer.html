@@ -22,8 +22,8 @@
 							<tr>
 								<td>{{i.username}}</td>
                                 <td>{{i.email}}</td>
-                                <td>{{i.phone}}</td>
-								<td><a class="btn btn-sm btn-info" href="">Approve</a></td>
+                                <td>{{i.user_type}}</td>
+								<td><a class="btn btn-sm btn-info" href="{% url 'approve_user' i.id %}">Approve</a></td>
 								<td><a class="btn btn-sm btn-danger" href="">Deny</a></td>
 							</tr>	
 						{% endfor %}

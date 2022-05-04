@@ -4,7 +4,6 @@
 {% block content %}
 
 
-
 		<br>
 		<div class="row">
 			<div class="col">
@@ -19,10 +18,9 @@
 		</div>
 		<br>
 
+
         <br>
-
         
-
 		<div class="row">
 			<div class="col-md">
 				<div class="card card-body">
@@ -44,7 +42,7 @@
 								<td>{{i.date}}</td>
 								<td>{{i.time}}</td>
 								<td>{{i.screen}}</td>
-								<td><a class="btn btn-sm btn-info" href="">Select</a></td>
+								<td><a class="btn btn-sm btn-info" href="{% url 'select_showing' i.id %}">Select</a></td>
 
 							</tr>	
 						{% endfor %}

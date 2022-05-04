@@ -3,9 +3,14 @@ from django.forms import ModelForm
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django import forms
+from .models import Film, Showing, UniversityClub, ClubRepresentative, Account, Screen, User
 
-from uweflixapp import models
-from .models import Film, Showing, UniversityClub, ClubRepresentative, Account, Screen
+
+
+class CustomUserCreationForm(UserCreationForm):
+    class Meta:
+        model = User
+        fields = ("username", "email", "first_name", "last_name", "user_type")
 
 
 class FilmForm(ModelForm):
@@ -38,7 +43,3 @@ class AccountForm(forms.ModelForm):
         model = Account
         fields = '__all__'
 
-class CreateUserForm(UserCreationForm):
-    class Meta:
-        model = User
-        fields = ['username', 'email', 'password1', 'password2']

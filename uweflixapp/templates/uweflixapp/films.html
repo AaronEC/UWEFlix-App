@@ -26,7 +26,7 @@
 								<td>{{i.title}}</td>
 								<td>{{i.age_rating}}</td>
 								<td>{{i.description}}</td>
-								<td><a class="btn btn-sm btn-info" href="">Update</a></td>
+								<td><a class="btn btn-sm btn-info" href="{% url 'modify_film' i.id %}">Update</a></td>
 								<td><a class="btn btn-sm btn-danger" href="{% url 'delete_film' i.id %}">Delete</a></td>
 							</tr>	
 						{% endfor %}
