@@ -109,24 +109,11 @@ class Account(models.Model):
     def __str__(self):
         return self.club
 
-
 class Booking(models.Model):
-    """ TICKET_TYPE  = (
-        ('Child', 'Child'),
-        ('Adult', 'Adult'),
-        ('Student', 'Student'),
-    )
- """
-
-    ticket_quantity = models.IntegerField(null=False)
-    #ticketType = models.CharField(blank=False, null=False, max_length=7, choices=TICKET_TYPE, default='string')
-    adult_ticket = models.IntegerField(default=0, blank=False, null=True)
-    child_ticket = models.IntegerField(default=0, blank=False, null=True)
-    student_ticket = models.IntegerField(default=0, blank=False, null=True)
+    #adult_ticket = models.IntegerField(default=0, blank=False, null=True)
+    #child_ticket = models.IntegerField(default=0, blank=False, null=True)
+    #student_ticket = models.IntegerField(default=0, blank=False, null=True)
+    ticket_quantity = models.IntegerField(default=0, blank=False, null=True)
     total_cost = models.IntegerField(null=False, blank=False)
-    #customer = models.ForeignKey(User, on_delete=models.CASCADE, null=False)
-    showing = models.ForeignKey(Showing, on_delete=models.CASCADE, null=False, blank=False)
+    customer = models.ForeignKey(User, on_delete=models.CASCADE, null=False)
     date_created = models.DateTimeField(auto_now_add=True, null=True)
-
-
-

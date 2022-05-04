@@ -26,8 +26,8 @@
 								<td>{{i.date}}</td>
 								<td>{{i.time}}</td>
 								<td>{{i.screen}}</td>
-								<td><a class="btn btn-sm btn-info" href="">Update</a></td>
-								<td><a class="btn btn-sm btn-danger" href="">Delete</a></td>
+								<td><a class="btn btn-sm btn-info" href="{% url 'modify_showing' i.id %}">Update</a></td>
+								<td><a class="btn btn-sm btn-danger" href="{% url 'delete_showing' i.id %}">Delete</a></td>
 
 							</tr>	
 						{% endfor %}

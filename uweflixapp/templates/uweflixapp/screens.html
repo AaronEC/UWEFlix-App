@@ -20,8 +20,8 @@
 							<tr>
 								<td>{{i.screen_id}}</td>
 								<td>{{i.seats}}</td>
-								<td><a class="btn btn-sm btn-info" href="">Update</a></td>
-								<td><a class="btn btn-sm btn-danger" href="">Delete</a></td>
+								<td><a class="btn btn-sm btn-info" href="{% url 'modify_screen' i.id %}">Update</a></td>
+								<td><a class="btn btn-sm btn-danger" href="{% url 'delete_screen' i.id %}">Delete</a></td>
 							</tr>	
 						{% endfor %}
 

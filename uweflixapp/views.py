@@ -11,7 +11,7 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout, get_user_model
 from django.contrib.auth.models import Group
 from django.contrib.auth.decorators import login_required
-from .forms import CustomUserCreationForm
+from .forms import BookingForm, CustomUserCreationForm
 from django.contrib.auth.decorators import user_passes_test
 
 # Create your views here.
@@ -160,6 +160,50 @@ def clubs(request):
     clubs = UniversityClub.objects.all()
     return render(request, 'uweflixapp/clubs.html', {'clubs': clubs})
 
+# modify film
+def modifyFilm(request, pk):
+    film = Film.objects.get(id=pk)
+    form = FilmForm(instance=film)
+
+    if request.method == 'POST':
+        #print('Printing POST:', request.POST)
+        form = FilmForm(request.POST, instance=film)
+        if form.is_valid():
+            form.save()
+            return redirect('films')
+
+    context = {'form':form}
+    return render(request, 'uweflixapp/film_form.html', context)
+
+# modify Showing
+def modifyShowing(request, pk):
+    showing = Showing.objects.get(id=pk)
+    form = ShowingForm(instance=showing)
+
+    if request.method == 'POST':
+        #print('Printing POST:', request.POST)
+        form = ShowingForm(request.POST, instance=showing)
+        if form.is_valid():
+            form.save()
+            return redirect('showings')
+
+    context = {'form':form}
+    return render(request, 'uweflixapp/showing_form.html', context)
+
+# modify Screen
+def modifyScreen(request, pk):
+    screen = Screen.objects.get(id=pk)
+    form = ScreenForm(instance=screen)
+
+    if request.method == 'POST':
+        #print('Printing POST:', request.POST)
+        form = ScreenForm(request.POST, instance=screen)
+        if form.is_valid():
+            form.save()
+            return redirect('Screens')
+
+    context = {'form':form}
+    return render(request, 'uweflixapp/screen_form.html', context)
 
 # deletes film
 def deletesFilm(request, pk):
@@ -167,10 +211,32 @@ def deletesFilm(request, pk):
 
     if request.method == "POST":
         film.delete()
-        return redirect('/')
+        return redirect('films')
 
     context = {'film':film}
-    return render(request, 'uweflixapp/delete.html', context)
+    return render(request, 'uweflixapp/delete_film.html', context)
+
+# deletes Screen
+def deletesScreen(request, pk):
+    screen = Screen.objects.get(id=pk)
+
+    if request.method == "POST":
+        screen.delete()
+        return redirect('screens')
+
+    context = {'screen':screen}
+    return render(request, 'uweflixapp/delete_screen.html', context)
+
+# deletes Showing
+def deletesShowing(request, pk):
+    showing = Showing.objects.get(id=pk)
+
+    if request.method == "POST":
+        showing.delete()
+        return redirect('showings')
+
+    context = {'showing':showing}
+    return render(request, 'uweflixapp/delete_showing.html', context)
 
 # approves users
 def approveUser(request, pk): 
@@ -179,14 +245,25 @@ def approveUser(request, pk):
     
     if request.method == "POST":
         customer.is_active = True
-        password = User.objects.make_random_password(length=8)
-        customer.set_password('password123')
+        #password = User.objects.make_random_password(length=8)
+        #customer.set_password('password123')
         customer.save()
         return redirect('customer')
 
     context = {'customer':customer}
     return render(request, 'uweflixapp/approve.html', context)
 
+# denies users
+def denyUser(request, pk): 
+    user = get_user_model()
+    customer = user.objects.get(id=pk)
+    
+    if request.method == "POST":
+        customer.delete()
+        return redirect('customer')
+
+    context = {'customer':customer}
+    return render(request, 'uweflixapp/deny.html', context)
 
 
 # returns future showings
@@ -215,39 +292,28 @@ def selectShowing(request, pk):
     context = {'showing': showing, 'film':film, 'duration':duration, 'age_rating':age_rating, 'description':description, 'date':date, 'time':time, 'screen':screen}
     return render(request, 'uweflixapp/showing_details.html', context)
 
-# modify film
-def modifyFilm(request, pk):
-    film = Film.objects.get(id=pk)
-    form = FilmForm(instance=film)
-
-    if request.method == 'POST':
-        #print('Printing POST:', request.POST)
-        form = FilmForm(request.POST, instance=film)
-        if form.is_valid():
-            form.save()
-            return redirect('films')
-
-    context = {'form':form}
-    return render(request, 'uweflixapp/film_form.html', context)
 
 # create booking
-def createBooking():
-    return
+def createBooking(request):
+    TICKET_COST = 7.0
+
+    booking = Booking()
+    ticket_quantity = booking.objects.ticket_quantity()
+    
+
+    context = {'ticket_quantity':ticket_quantity}
+    return render(request, 'uweflixapp/booking_successful.html', context)
+
+
 
 # cancel Booking
 def cancelBooking():
     return
 
-
-
 # returns transactions from past 30 days
 def viewTransactions(request):
-    #transactions = Booking.objects.all()
-
     last_30_days = datetime.datetime.today() - datetime.timedelta(30)
-
     transactions = Booking.objects.filter(date_created__gte=last_30_days)
-
 
     context = {'transactions':transactions}
     return render(request, 'uweflixapp/transactions.html', context)
