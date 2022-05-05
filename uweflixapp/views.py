@@ -67,7 +67,7 @@ def loginPage(request):
             if user is not None:
                 login(request, user)
                 if user.is_superuser:
-                    return redirect('home')
+                    return redirect('clubs')
                 else:
                     return redirect('view_showings')
             else:
@@ -82,11 +82,13 @@ def logoutUser(request):
     return redirect('login')
 
 # returns home url
+@user_passes_test(must_be_cinema_manager)
 def home(request):
 
     return render(request, 'uweflixapp/clubs.html')
 
 # adds film
+@user_passes_test(must_be_cinema_manager)
 def addFilm(request):
     form = FilmForm()
     if request.method == 'POST':
@@ -99,6 +101,7 @@ def addFilm(request):
     return render(request, 'uweflixapp/film_form.html', context)
 
 # adds showing
+@user_passes_test(must_be_cinema_manager)
 def addShowing(request):
     form = ShowingForm()
     if request.method == 'POST':
@@ -111,6 +114,7 @@ def addShowing(request):
     return render(request, 'uweflixapp/showing_form.html', context)
 
 # adds club
+@user_passes_test(must_be_cinema_manager)
 def addClub(request):
     form = ClubForm()
     if request.method == 'POST':
@@ -123,6 +127,7 @@ def addClub(request):
     return render(request, 'uweflixapp/club_form.html', context)
 
 # adds screen
+@user_passes_test(must_be_cinema_manager)
 def addScreen(request):
     form = ScreenForm()
     if request.method == 'POST':
@@ -135,32 +140,38 @@ def addScreen(request):
     return render(request, 'uweflixapp/screen_form.html', context)
 
 # returns films
+@user_passes_test(must_be_cinema_manager)
 def films(request):
     films = Film.objects.all()
     return render(request, 'uweflixapp/films.html', {'films': films})
 
 # returns screens
+@user_passes_test(must_be_cinema_manager)
 def screens(request):
     screens = Screen.objects.all()
     return render(request, 'uweflixapp/screens.html', {'screens': screens})
 
 # returns users not approved yet
+@user_passes_test(must_be_cinema_manager)
 def customer(request):
     user = get_user_model()
     customer = user.objects.filter(is_active__in=[False])
     return render(request, 'uweflixapp/customer.html', {'customer': customer})
 
 # # returns showings
+@user_passes_test(must_be_cinema_manager)
 def showings(request):
     showings = Showing.objects.all()
     return render(request, 'uweflixapp/showings.html', {'showings': showings})
 
 # returns university clubs
+@user_passes_test(must_be_cinema_manager)
 def clubs(request):
     clubs = UniversityClub.objects.all()
     return render(request, 'uweflixapp/clubs.html', {'clubs': clubs})
 
 # modify film
+@user_passes_test(must_be_cinema_manager)
 def modifyFilm(request, pk):
     film = Film.objects.get(id=pk)
     form = FilmForm(instance=film)
@@ -176,6 +187,7 @@ def modifyFilm(request, pk):
     return render(request, 'uweflixapp/film_form.html', context)
 
 # modify Showing
+@user_passes_test(must_be_cinema_manager)
 def modifyShowing(request, pk):
     showing = Showing.objects.get(id=pk)
     form = ShowingForm(instance=showing)
@@ -191,6 +203,7 @@ def modifyShowing(request, pk):
     return render(request, 'uweflixapp/showing_form.html', context)
 
 # modify Screen
+@user_passes_test(must_be_cinema_manager)
 def modifyScreen(request, pk):
     screen = Screen.objects.get(id=pk)
     form = ScreenForm(instance=screen)
@@ -206,6 +219,7 @@ def modifyScreen(request, pk):
     return render(request, 'uweflixapp/screen_form.html', context)
 
 # deletes film
+@user_passes_test(must_be_cinema_manager)
 def deletesFilm(request, pk):
     film = Film.objects.get(id=pk)
 
@@ -217,6 +231,7 @@ def deletesFilm(request, pk):
     return render(request, 'uweflixapp/delete_film.html', context)
 
 # deletes Screen
+@user_passes_test(must_be_cinema_manager)
 def deletesScreen(request, pk):
     screen = Screen.objects.get(id=pk)
 
@@ -228,6 +243,7 @@ def deletesScreen(request, pk):
     return render(request, 'uweflixapp/delete_screen.html', context)
 
 # deletes Showing
+@user_passes_test(must_be_cinema_manager)
 def deletesShowing(request, pk):
     showing = Showing.objects.get(id=pk)
 
@@ -238,7 +254,8 @@ def deletesShowing(request, pk):
     context = {'showing':showing}
     return render(request, 'uweflixapp/delete_showing.html', context)
 
-# approves users
+# approve user
+@user_passes_test(must_be_cinema_manager)
 def approveUser(request, pk): 
     user = get_user_model()
     customer = user.objects.get(id=pk)
@@ -253,7 +270,8 @@ def approveUser(request, pk):
     context = {'customer':customer}
     return render(request, 'uweflixapp/approve.html', context)
 
-# denies users
+# deny user
+@user_passes_test(must_be_cinema_manager)
 def denyUser(request, pk): 
     user = get_user_model()
     customer = user.objects.get(id=pk)
@@ -327,6 +345,7 @@ def cancelBooking():
     return
 
 # returns transactions from past 30 days
+@user_passes_test(must_be_cinema_manager)
 def viewTransactions(request):
     last_30_days = datetime.datetime.today() - datetime.timedelta(30)
     transactions = Booking.objects.filter(date_created__gte=last_30_days)

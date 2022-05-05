@@ -47,8 +47,6 @@ class ClubRepresentative(models.Model):
     date_of_birth = models.DateField()
     password = models.CharField(max_length=8, null=True, unique=True)
 
-    def generate_id():
-        return
 
 
 class UniversityClub(models.Model):

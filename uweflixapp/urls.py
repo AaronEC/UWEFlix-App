@@ -4,11 +4,12 @@ from . import views
 #app_name = 'uweflixapp'
 
 urlpatterns = [
+    #path('', views.home, name="home"),
+    path('', views.viewShowings, name="home"),
     path('register/', views.registerPage, name="register"),
     path('login/', views.loginPage, name="login"),
     path('logout/', views.logoutUser, name="logout"),
 
-    path('', views.home, name="home"),
     path('films/', views.films, name="films"),
     path('customer/', views.customer, name="customer"),
     path('showings/', views.showings, name="showings"),
