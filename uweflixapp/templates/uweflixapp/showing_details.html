@@ -11,9 +11,11 @@
 				</div>
 				<div class="card card-body">
 					{{ film }}
+					<hr>
 					{{ duration }}
 					{{ age_rating }}
 					{{ description }}
+					<hr>
 					{{ date }}
 					{{ time }}
 					{{ screen }}
@@ -22,18 +24,44 @@
 			
 		</div>
 
-		<div class="row">
-            <div class="col-md">
-                <div>			
-							
-                    <a class="btn btn-outline-info  btn-sm btn-block" href="{% url 'create_booking' %}">Make Payment</a>
-        
-
-                </div>
-            </div
 
 
-			
+		<div class="container my-3">
+
+			<form action="{% url 'place_order' %}" method="POST">
+				{% csrf_token %}
+				<div class="row">
+					<div class="col-md-7">
+						<div class="card shadow ">
+							<div class="card-body" >
+								<h6>Tickets</h6>
+								<hr>
+
+								<div class="row bookingForm">
+									<div class="col-md-6">
+										<label>Quantity</label>
+										<input type="integer" class="form-control" name="ticket_quantity" placeholder="Ticket Quantity">
+									</div>
+									<div class="col-md-6">
+										<label>Total Cost</label>
+										<input type="integer" step=1 class="form-control" name="total_cost" placeholder="Ticket Quantity">
+									</div>
+
+									<button type="submit" class="btn btn-success w-100">Place Order</button> 
+
+									</div>
+								</div>
+							</div>
+	
+						</div>
+					
+				</div>
+	
+			</form>
+
+		</div>
+
+
 			
 
 {%  endblock %}

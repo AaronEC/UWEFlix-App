@@ -1,4 +1,5 @@
 from pyexpat import model
+from statistics import quantiles
 from django.contrib.auth.models import PermissionsMixin, AbstractBaseUser, BaseUserManager
 from tkinter import CASCADE
 from unicodedata import name
@@ -113,7 +114,19 @@ class Booking(models.Model):
     #adult_ticket = models.IntegerField(default=0, blank=False, null=True)
     #child_ticket = models.IntegerField(default=0, blank=False, null=True)
     #student_ticket = models.IntegerField(default=0, blank=False, null=True)
+    customer = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     ticket_quantity = models.IntegerField(default=0, blank=False, null=True)
-    total_cost = models.IntegerField(null=False, blank=False)
-    customer = models.ForeignKey(User, on_delete=models.CASCADE, null=False)
+    total_cost = models.FloatField(null=True, blank=True)
     date_created = models.DateTimeField(auto_now_add=True, null=True)
+
+
+class BookingShowing(models.Model):
+    booking = models.ForeignKey(Booking, on_delete=models.CASCADE)
+    showing = models.ForeignKey(Showing, on_delete=models.CASCADE)
+    price = models.FloatField(null=False)
+    quantity = models.IntegerField(null=False)
+
+    def __str__(self):
+        return self.booking.id
+
+

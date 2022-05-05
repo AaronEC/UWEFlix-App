@@ -1,0 +1,60 @@
+{% extends 'uweflixapp/main.html' %}
+
+{% block content %}
+
+        <br>
+
+		<div class="row">
+			<div class="col-md">
+				<div class="card card-body">
+					<h5>Checkout</h5>
+				</div>
+				<div class="card card-body">
+                    
+				</div>
+			</div>
+			
+		</div>
+
+		<div class="row">
+            <div class="col-md">
+                <div>			
+							
+					<form action="{% url 'place_order' %}" method="POST">
+						<div class="row">
+							<div class="col-md-7">
+								<div class="card shadow ">
+									<div class="card-body" >
+										<h6>Further details</h6>
+										<hr>
+										<div class="row bookingForm">
+											<div class="col-md-6">
+												<label>Quantity</label>
+												<input type="integer" class="form-control" name="ticket_quantity" placeholder="Ticket Quantity">
+											</div>
+											<div class="col-md-6">
+												<label>Total Cost</label>
+												<input type="integer" class="form-control" name="total_cost" placeholder="Ticket Quantity">
+											</div>
+											</div>
+										</div>
+									</div>
+
+								</div>
+							
+						</div>
+
+					</form>
+
+					<div>
+						<button type="submit" class="btn btn-success w-100"> Make Payment</button>
+					</div>
+
+                </div>
+            </div
+
+
+			
+			
+
+{%  endblock %}

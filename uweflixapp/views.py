@@ -306,6 +306,22 @@ def createBooking(request):
 
 
 
+def placeOrder(request):
+    #and newbooking.is_valid()
+    if request.method == "POST":
+        newbooking = BookingForm()
+        if newbooking.is_valid():
+            newbooking.customer = request.user
+            newbooking.ticket_quantity = request.POST.get('ticket_quantity')
+            newbooking.total_cost = request.POST.get('total_cost')
+            newbooking.save()
+
+    context = {}
+
+    #messages.success(request, "Your order has been placed successfully")
+
+    return redirect('view_showings')
+
 # cancel Booking
 def cancelBooking():
     return
