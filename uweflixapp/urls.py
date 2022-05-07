@@ -34,7 +34,7 @@ urlpatterns = [
 
     path('view_showings/', views.viewShowings, name="view_showings"),
     path('select_showing/<str:pk>/', views.selectShowing, name="select_showing"),
-    path('place_order/', views.placeOrder, name="place_order"),
+    path('place_order/<str:pk>/', views.placeOrder, name="place_order"),
     path('create_booking/', views.createBooking, name="create_booking"),
     
     path('view_transactions/', views.viewTransactions, name="view_transactions"),

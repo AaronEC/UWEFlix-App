@@ -22,6 +22,7 @@
 						{{ date }}
 						{{ time }}
 						{{ screen }}
+						{{ available_seats }}
 					</div>
 				</div>
 				
@@ -30,7 +31,7 @@
 			<hr>
 
 
-			<form action="{% url 'place_order' %}" method="POST">
+			<form action="{% url 'place_order' showing.id %}" method="POST">
 				{% csrf_token %}
 				<div class="row">
 					<div class="col-md-7">
@@ -43,17 +44,17 @@
 
 									<div class="col-md-6">
 										<label>Adult Quantity</label>
-										<input type="integer" class="form-control" name="adult_ticket" placeholder="Adult Quantity">
+										<input type="number" class="form-control" name="adult_ticket" placeholder="Adult Quantity">
 									</div>
 
 									<div class="col-md-6">
 										<label>Child Quantity</label>
-										<input type="integer" class="form-control" name="child_ticket" placeholder="Child Quantity">
+										<input type="number" class="form-control" name="child_ticket" placeholder="Child Quantity">
 									</div>
 
 									<div class="col-md-6">
 										<label>Student Quantity</label>
-										<input type="integer" class="form-control" name="student_ticket" placeholder="Student Quantity">
+										<input type="number" class="form-control" name="student_ticket" placeholder="Student Quantity">
 										<p></p>
 									</div>
 

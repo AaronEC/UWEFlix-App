@@ -1,9 +1,11 @@
 from pyexpat import model
 from statistics import quantiles
+from zoneinfo import available_timezones
 from django.contrib.auth.models import PermissionsMixin, AbstractBaseUser, BaseUserManager
 from tkinter import CASCADE
 from unicodedata import name
 from django.db import models
+from django.core.validators import MaxValueValidator, MinValueValidator
 
 
 
@@ -89,12 +91,12 @@ class Screen(models.Model):
     def __str__(self):
         return self.screen_id
 
-
 class Showing(models.Model):
     film = models.ForeignKey(Film, null=True, on_delete=models.CASCADE, blank=False)
     date = models.DateField(null=True, blank=False)
     time = models.TimeField(null=True, blank=False)
     screen = models.ForeignKey(Screen, on_delete=models.CASCADE, null=False, blank=False)
+    available_seats = models.IntegerField(default=200, blank=False, null=False)
     
     def __str__(self):
         return self.film.title
@@ -110,8 +112,8 @@ class Account(models.Model):
 
 class Booking(models.Model):
     customer = models.ForeignKey(User, on_delete=models.CASCADE, null=True, default=None)
-    adult_ticket = models.IntegerField(default=0, null=False)
-    child_ticket = models.IntegerField(default=0, null=False)
-    student_ticket = models.IntegerField(default=0, null=False)
+    adult_ticket = models.PositiveIntegerField(default=0, null=False)
+    child_ticket = models.PositiveIntegerField(default=0, null=False)
+    student_ticket = models.PositiveIntegerField(default=0, null=False)
     total_cost = models.FloatField(default=0)
     date_created = models.DateTimeField(auto_now_add=True)

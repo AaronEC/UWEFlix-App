@@ -202,7 +202,7 @@ def modifyScreen(request, pk):
         form = ScreenForm(request.POST, instance=screen)
         if form.is_valid():
             form.save()
-            return redirect('Screens')
+            return redirect('screens')
 
     context = {'form':form}
     return render(request, 'uweflixapp/screen_form.html', context)
@@ -290,8 +290,9 @@ def selectShowing(request, pk):
     date = showing.date
     time = showing.time
     screen = showing.screen
+    seats = showing.available_seats
 
-    context = {'showing': showing, 'film':film, 'duration':duration, 'age_rating':age_rating, 'description':description, 'date':date, 'time':time, 'screen':screen}
+    context = {'showing': showing, 'film':film, 'duration':duration, 'age_rating':age_rating, 'description':description, 'date':date, 'time':time, 'screen':screen, 'seats':seats}
     return render(request, 'uweflixapp/showing_details.html', context)
 
 
@@ -332,7 +333,7 @@ def viewAccount(request, pk):
     context = {'customer':customer, 'bookings':bookings, 'myFilter':myFilter}
     return render(request, 'uweflixapp/account.html', context)
 
-def placeOrder(request):
+def placeOrder(request, pk):
     #and newbooking.is_valid()
     if request.method == "POST":
         newbooking = Booking()
@@ -343,7 +344,6 @@ def placeOrder(request):
         else:
             newbooking.customer = request.user
 
-        
         newbooking.child_ticket = request.POST.get('child_ticket')
         newbooking.adult_ticket = request.POST.get('adult_ticket')
         newbooking.student_ticket = request.POST.get('student_ticket')
@@ -353,24 +353,24 @@ def placeOrder(request):
         student_ticket = request.POST.get('student_ticket')
 
         newbooking.total_cost = calcTotalCost(adult_ticket, child_ticket, student_ticket)
-        newbooking.save()
 
+        total_quantity = calcTotalQuantity(adult_ticket, child_ticket, student_ticket)
+        showing = Showing.objects.get(id=pk)
+        available_seats = showing.available_seats
+        updated_seats = available_seats-total_quantity
 
-    #total_quantity = calcTotalQuantity(adult_ticket, child_ticket, student_ticket)
+        if updated_seats >= 0:
+            Showing.objects.filter(id=pk).update(available_seats=updated_seats)
+            newbooking.save()
+            return redirect('view_showings')
+        else:
+            messages.add_message(request, messages.INFO, 'Insufficient seats available')
+            return redirect('view_showings')
 
-    #messages.success(request, "Your order has been placed successfully")
-
-    return redirect('view_showings')
-
-
-
-# cancel Booking
-def cancelBooking():
-    return
 
 # returns transactions from past 30 days
 def viewTransactions(request):
-    last_30_days = datetime.datetime.today() - datetime.timedelta(0)
+    last_30_days = datetime.datetime.today() - datetime.timedelta(30)
     transactions = Booking.objects.filter(date_created__gte=last_30_days)
 
     context = {'transactions':transactions}
@@ -379,5 +379,3 @@ def viewTransactions(request):
 # toggle social distancing
 def toggledistancing():
     return
-
-
