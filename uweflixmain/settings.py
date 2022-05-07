@@ -28,9 +28,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-# SESSION AGE 5 Minutes # https://stackoverflow.com/questions/14830669/how-to-expire-django-session-in-5minutes
-SESSION_COOKIE_AGE = 1*60
-
 
 # Application definition
 
@@ -48,6 +45,7 @@ INSTALLED_APPS = [
 
 AUTH_USER_MODEL = "uweflixapp.User"
 
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -56,6 +54,9 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    'django_session_timeout.middleware.SessionTimeoutMiddleware',
 ]
 
 ROOT_URLCONF = 'uweflixmain.urls'
@@ -137,3 +138,7 @@ MEDIA_ROOT = [os.path.join(BASE_DIR, 'media')]
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+SESSION_EXPIRE_SECONDS = 1200  # 1200 seconds = 20 minutes
+SESSION_EXPIRE_AFTER_LAST_ACTIVITY = True
+SESSION_TIMEOUT_REDIRECT = '/login/'  # redirect to whatever page

@@ -8,27 +8,23 @@
 		<div class="row">
 			<div class="col-md">
 				<div class="card card-body">
-					<h5>transactions</h5>
+					<h5>Users Transactions</h5>
 				</div>
 				<div class="card card-body">
 					<table class="table">
 						<tr>
-							<th>Booking ID</th>
-                            <th>Ticket Quantity</th>
-							<th>Cost</th>
-							<th>Date Created</th>
+							<th>Username</th>
+                            <th>Email</th>
 						</tr>
 
-
-						{% for i in transactions %}
+                        {% for i in customer %}
 							<tr>
-								<td>{{i.id}}</td>
-								<td>{{i.ticket_quantity}}</td>
-								<td>{{i.total_cost}}</td>
-								<td>{{i.date_created}}</td>
-								
+								<td>{{i.username}}</td>
+                                <td>{{i.email}}</td>
+								<td><a class="btn btn-sm btn-info" href="{% url 'view_account' i.id %}">View Account</a></td>
 							</tr>	
 						{% endfor %}
+
 						
 					</table>
 				</div>

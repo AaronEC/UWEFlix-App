@@ -15,3 +15,10 @@ class ShowFilter(django_filters.FilterSet):
         fields = ['date']
         #exclude = ['film', 'time', 'screen']
 
+
+
+class BookingFilter(django_filters.FilterSet):
+
+    class Meta:
+        model = Booking
+        fields = '__all__'

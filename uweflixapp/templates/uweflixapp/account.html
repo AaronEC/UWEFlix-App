@@ -1,0 +1,35 @@
+{% extends 'uweflixapp/main.html' %}
+
+
+{% block content %}
+
+<br>
+
+
+
+
+<div class="row">
+	<div class="col-md">
+		<div class="card card-body">
+			<table class="table table-sm">
+				<tr>
+					<th>User</th>
+					<th>Transaction Cost</th>
+					<th>Transaction Date</th>
+				</tr>
+
+				{% for booking in bookings %}
+
+				<tr>
+					<td>{{booking.customer}}</td>
+					<td>{{booking.total_cost}}</td>
+					<td>{{booking.date_created}}</td>
+				</tr>
+				{% endfor %}
+
+			</table>
+		</div>
+	</div>
+</div>
+
+{%  endblock %}

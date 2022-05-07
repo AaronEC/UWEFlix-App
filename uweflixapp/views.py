@@ -1,6 +1,7 @@
 import datetime
 import imp
 from itertools import count
+from multiprocessing import context
 from unittest.util import _MAX_LENGTH
 from urllib import request
 from django.shortcuts import render, redirect
@@ -16,8 +17,8 @@ from django.contrib.auth.decorators import user_passes_test
 
 # Create your views here.
 from .models import *
-from .forms import ScreenForm, ClubForm, ShowingForm, FilmForm
-from .filters import ShowFilter
+from .forms import ScreenForm, ClubForm, ShowingForm, FilmForm, BookingForm
+from .filters import BookingFilter, ShowFilter
 
 
 # PERMISSIONS
@@ -88,7 +89,6 @@ def home(request):
     return render(request, 'uweflixapp/clubs.html')
 
 # adds film
-@user_passes_test(must_be_cinema_manager)
 def addFilm(request):
     form = FilmForm()
     if request.method == 'POST':
@@ -101,7 +101,6 @@ def addFilm(request):
     return render(request, 'uweflixapp/film_form.html', context)
 
 # adds showing
-@user_passes_test(must_be_cinema_manager)
 def addShowing(request):
     form = ShowingForm()
     if request.method == 'POST':
@@ -114,7 +113,6 @@ def addShowing(request):
     return render(request, 'uweflixapp/showing_form.html', context)
 
 # adds club
-@user_passes_test(must_be_cinema_manager)
 def addClub(request):
     form = ClubForm()
     if request.method == 'POST':
@@ -127,7 +125,6 @@ def addClub(request):
     return render(request, 'uweflixapp/club_form.html', context)
 
 # adds screen
-@user_passes_test(must_be_cinema_manager)
 def addScreen(request):
     form = ScreenForm()
     if request.method == 'POST':
@@ -140,38 +137,32 @@ def addScreen(request):
     return render(request, 'uweflixapp/screen_form.html', context)
 
 # returns films
-@user_passes_test(must_be_cinema_manager)
 def films(request):
     films = Film.objects.all()
     return render(request, 'uweflixapp/films.html', {'films': films})
 
 # returns screens
-@user_passes_test(must_be_cinema_manager)
 def screens(request):
     screens = Screen.objects.all()
     return render(request, 'uweflixapp/screens.html', {'screens': screens})
 
 # returns users not approved yet
-@user_passes_test(must_be_cinema_manager)
 def customer(request):
     user = get_user_model()
     customer = user.objects.filter(is_active__in=[False])
     return render(request, 'uweflixapp/customer.html', {'customer': customer})
 
 # # returns showings
-@user_passes_test(must_be_cinema_manager)
 def showings(request):
     showings = Showing.objects.all()
     return render(request, 'uweflixapp/showings.html', {'showings': showings})
 
 # returns university clubs
-@user_passes_test(must_be_cinema_manager)
 def clubs(request):
     clubs = UniversityClub.objects.all()
     return render(request, 'uweflixapp/clubs.html', {'clubs': clubs})
 
 # modify film
-@user_passes_test(must_be_cinema_manager)
 def modifyFilm(request, pk):
     film = Film.objects.get(id=pk)
     form = FilmForm(instance=film)
@@ -187,7 +178,6 @@ def modifyFilm(request, pk):
     return render(request, 'uweflixapp/film_form.html', context)
 
 # modify Showing
-@user_passes_test(must_be_cinema_manager)
 def modifyShowing(request, pk):
     showing = Showing.objects.get(id=pk)
     form = ShowingForm(instance=showing)
@@ -203,7 +193,6 @@ def modifyShowing(request, pk):
     return render(request, 'uweflixapp/showing_form.html', context)
 
 # modify Screen
-@user_passes_test(must_be_cinema_manager)
 def modifyScreen(request, pk):
     screen = Screen.objects.get(id=pk)
     form = ScreenForm(instance=screen)
@@ -219,7 +208,6 @@ def modifyScreen(request, pk):
     return render(request, 'uweflixapp/screen_form.html', context)
 
 # deletes film
-@user_passes_test(must_be_cinema_manager)
 def deletesFilm(request, pk):
     film = Film.objects.get(id=pk)
 
@@ -231,7 +219,6 @@ def deletesFilm(request, pk):
     return render(request, 'uweflixapp/delete_film.html', context)
 
 # deletes Screen
-@user_passes_test(must_be_cinema_manager)
 def deletesScreen(request, pk):
     screen = Screen.objects.get(id=pk)
 
@@ -243,7 +230,6 @@ def deletesScreen(request, pk):
     return render(request, 'uweflixapp/delete_screen.html', context)
 
 # deletes Showing
-@user_passes_test(must_be_cinema_manager)
 def deletesShowing(request, pk):
     showing = Showing.objects.get(id=pk)
 
@@ -255,7 +241,6 @@ def deletesShowing(request, pk):
     return render(request, 'uweflixapp/delete_showing.html', context)
 
 # approve user
-@user_passes_test(must_be_cinema_manager)
 def approveUser(request, pk): 
     user = get_user_model()
     customer = user.objects.get(id=pk)
@@ -271,7 +256,6 @@ def approveUser(request, pk):
     return render(request, 'uweflixapp/approve.html', context)
 
 # deny user
-@user_passes_test(must_be_cinema_manager)
 def denyUser(request, pk): 
     user = get_user_model()
     customer = user.objects.get(id=pk)
@@ -313,41 +297,80 @@ def selectShowing(request, pk):
 
 # create booking
 def createBooking(request):
-    TICKET_COST = 7.0
 
-    booking = Booking()
-    ticket_quantity = booking.objects.ticket_quantity()
-    
-
-    context = {'ticket_quantity':ticket_quantity}
+    context = {}
     return render(request, 'uweflixapp/booking_successful.html', context)
 
 
+def calcTotalCost(adult_quantity, child_quantity, student_quantity):
+    adult_ticket_cost = 7.0
+    child_ticket_cost = 4.0
+    student_ticket_cost = 5.0
+    total_price = (int(adult_quantity)*adult_ticket_cost)+(int(child_quantity)*child_ticket_cost)+(int(student_quantity)*student_ticket_cost)
+    return total_price
+
+def calcTotalQuantity(adult_quantity, child_quantity, student_quantity):
+    total_quantity = int(adult_quantity)+int(child_quantity)+int(student_quantity)
+    return total_quantity
+
+def viewCustomers(request):
+    user = get_user_model()
+    customer = user.objects.filter(is_active__in=[True])
+    return render(request, 'uweflixapp/user_transactions.html', {'customer': customer})
+
+def viewAccount(request, pk):
+    user = get_user_model()
+    customer = user.objects.get(id=pk)
+    last_30_days = datetime.datetime.today() - datetime.timedelta(30)
+    
+    bookings = customer.booking_set.all()
+
+    myFilter = bookings.filter(date_created__gte=last_30_days)
+    #myFilter = BookingFilter(request.GET, queryset=bookings)
+    bookings = myFilter
+
+    context = {'customer':customer, 'bookings':bookings, 'myFilter':myFilter}
+    return render(request, 'uweflixapp/account.html', context)
 
 def placeOrder(request):
     #and newbooking.is_valid()
     if request.method == "POST":
-        newbooking = BookingForm()
-        if newbooking.is_valid():
-            newbooking.customer = request.user
-            newbooking.ticket_quantity = request.POST.get('ticket_quantity')
-            newbooking.total_cost = request.POST.get('total_cost')
-            newbooking.save()
+        newbooking = Booking()
+        #newbooking.customer = request.user
 
-    context = {}
+        if request.user.is_anonymous:
+            newbooking.customer = None
+        else:
+            newbooking.customer = request.user
+
+        
+        newbooking.child_ticket = request.POST.get('child_ticket')
+        newbooking.adult_ticket = request.POST.get('adult_ticket')
+        newbooking.student_ticket = request.POST.get('student_ticket')
+
+        child_ticket = request.POST.get('child_ticket')
+        adult_ticket = request.POST.get('adult_ticket')
+        student_ticket = request.POST.get('student_ticket')
+
+        newbooking.total_cost = calcTotalCost(adult_ticket, child_ticket, student_ticket)
+        newbooking.save()
+
+
+    #total_quantity = calcTotalQuantity(adult_ticket, child_ticket, student_ticket)
 
     #messages.success(request, "Your order has been placed successfully")
 
     return redirect('view_showings')
+
+
 
 # cancel Booking
 def cancelBooking():
     return
 
 # returns transactions from past 30 days
-@user_passes_test(must_be_cinema_manager)
 def viewTransactions(request):
-    last_30_days = datetime.datetime.today() - datetime.timedelta(30)
+    last_30_days = datetime.datetime.today() - datetime.timedelta(0)
     transactions = Booking.objects.filter(date_created__gte=last_30_days)
 
     context = {'transactions':transactions}

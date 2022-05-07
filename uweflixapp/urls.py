@@ -38,7 +38,9 @@ urlpatterns = [
     path('create_booking/', views.createBooking, name="create_booking"),
     
     path('view_transactions/', views.viewTransactions, name="view_transactions"),
+    path('user_transactions/', views.viewCustomers, name="user_transactions"),
 
+    path('view_account/<str:pk>/', views.viewAccount, name="view_account"),
 
 
     #path('cancel_booking/', views.cancelBooking, name="cancel_booking"),
