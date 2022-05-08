@@ -1,7 +1,6 @@
 from django.contrib import admin
-from uweflixapp.models import Movie, Video, Profile, CustomUser
+from uweflixapp.models import Movie, CustomUser, Showing
 
 admin.site.register(Movie)
-admin.site.register(Video)
-admin.site.register(Profile)
 admin.site.register(CustomUser)
+admin.site.register(Showing)

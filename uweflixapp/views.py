@@ -3,67 +3,28 @@ from django.shortcuts import redirect, render
 from django.views import View
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
-from .forms import ProfileForm
-from .models import Profile, Movie
+from .models import Movie, Showing
 
 class Home(View):
     def get(self, request, *args, **kwargs):
         # Redirect to profile page if logged in
         if request.user.is_authenticated:
-            return redirect('uweflixapp:profile-list')
+            return redirect('uweflixapp:movie-list')
         return render(request, 'index.html')
-    
-
-method_decorator(login_required, name='dispatch')
-class ProfileList(View):
-    
-    def get(self, request, *args, **kwargs):
-        profiles = request.user.profiles.all()
-        context = {
-            'profiles':profiles
-        }
-        return render(request, 'profilelist.html', context)
-    
-
-method_decorator(login_required, name='dispatch')
-class ProfileCreate(View):
-    
-    def get(self, request, *args, **kwargs):
-        form = ProfileForm()
-        context = {
-            'form':form
-        }
-        return render(request, 'profilecreate.html', context)
-    
-    def post(self, request, *args, **kwargs):
-        form = ProfileForm(request.POST or None)
-        if form.is_valid():
-            profile = Profile.objects.create(**form.cleaned_data)
-            if profile:
-                request.user.profiles.add(profile)
-                return redirect('uweflixapp:profile-list')
-        context = {
-            'form':form
-        }
-        return render(request, 'profilecreate.html', context)
-    
     
 method_decorator(login_required, name='dispatch')
 class MovieList(View):
     
-    def get(self, request, profile_id, *args, **kwargs):
-        try:
-            profile = Profile.objects.get(uuid=profile_id)
-            movies = Movie.objects.filter(age_limit=profile.age_limit)
-            if profile not in request.user.profiles.all():
-                return redirect('uweflixapp:profile-list')
+    def get(self, request, *args, **kwargs):
+
+            movies = Movie.objects.filter()
+            
             context = {
                 'movies':movies
             }   
+
             return render(request, 'movielist.html', context)
-        except Profile.DoesNotExist:
-            return redirect('uweflixapp:profile-list')
-        
+
         
 method_decorator(login_required, name='dispatch')
 class MovieDetail(View):
@@ -71,9 +32,11 @@ class MovieDetail(View):
     def get(self, request, movie_id, *args, **kwargs):
         try:
             movie = Movie.objects.get(uuid=movie_id)
+            showings = Showing.objects.filter(movie=movie)
 
             context = {
-                'movie':movie
+                'movie':movie,
+                'showings':showings
             }   
             
             return render(request, 'moviedetail.html', context)

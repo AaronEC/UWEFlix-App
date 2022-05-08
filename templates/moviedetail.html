@@ -3,43 +3,70 @@
 
 {% block content %}
 <main class='bg-primary_black min-h-screen w-full'>
-    <section class="h-screen relative bg-no-repeat pb-8 pl-6 flex justify-left items-end bg-cover" style="background-image: url('{{ movie.image.url }}');">
-        <div class="bg-gray-900 bg-opacity-70 py-8 px-4 rounded-md w-8/12">
+    <section class="h-screen relative bg-no-repeat flex justify-left items-end bg-cover" style="background-image: url('{{ movie.banner.url }}');">
+        <iframe id="player" width="100%" height="100%" src="https://www.youtube.com/embed/oZ6iiRrz1SY?autoplay=1&mute=1&controls=0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; modestbranding; clipboard-write; encrypted-media; gyroscope; picture-in-picture" style="  position: absolute; top: 0; left: 0; overflow: hidden; display: none;"></iframe>
+        <div class="bg-gray-900 bg-opacity-70 py-8 px-4 rounded-md w-8/12" style="position:absolute; z-index:2 ">
             <h2 class="text-6xl font-semibold text-white my-4 " style="font-weight: bolder;">
                 {{ movie.title }}
             </h2>
             <p class="font-medium text-white my-4">
                 {{ movie.description }}
-                {% lorem 1 %}
             </p>
             <div class="flex my-4">
-
-                <button class="flex items-center bg-white py-2 px-5 rounded-md">
+                <a href="#showings" class="flex items-center bg-black py-2 px-5 rounded-md">
+                    <ion-icon name="checkbox-outline" class="text-2xl"></ion-icon>
+                    <span id="showings" class="ml-3 font-medium">
+                        View Showings
+                    </span>
+                </a>
+                <button onclick="playTrailer()" target="_blank" class="flex items-center bg-black py-2 px-5 rounded-md" style="margin-left: 20px;">
                     <ion-icon name="play" class="text-2xl"></ion-icon>
-                    <span class="ml-3 font-medium">
-                        Play
+                    <span id="showings" class="ml-3 font-medium">
+                        Play Trailer
                     </span>
                 </button>
-
-                
             </div>
         </div>
     </section> 
-    <section class='bg-primary_black  min-h-screen flex justify-center py-10'>
+
+    <section class='bg-primary_black  min-h-screen flex justify-center p-20'>
         <div class="p-8 w-10/12 relative" >
-            <h2 class="text-gray-200 text-3xl font-medium">
-                Showings
+            <h2 class="text-gray-200 text-2xl font-medium">
+                Current Showings for this Movie:
             </h2>
-            <div class="flex justify-center  items-center min-w-full  movie_lis">
-                <p class="text-gray-100 text-lg">
-                    List of showings wil appear here.
-                </p>
-            </div>
+            
+                {% for showing in showings %}
+                <div style="position: relative; width: 100%; columns: 100px 3; margin: 30px; margin-left: 0px; margin-right: 0px;"> 
+                    <a class="flex items-center bg-white py-2 px-5 rounded-md" style="color: black;">
+                        <ion-icon name="time" class="text-2xl"></ion-icon>
+                        <span id="showings" class="ml-3 font-medium">
+                            {{ showing.date }}
+                        </span>
+                    </a>
+                    <a class="flex items-center bg-white py-2 px-5 rounded-md" style="color: black; margin-right: 10px;">
+                        <ion-icon name="tv" class="text-2xl"></ion-icon>
+                        <span id="showings" class="ml-3 font-medium">
+                            Screen: {{ showing.screen }}
+                        </span>
+                    </a>
+                    <a class="flex items-center bg-primary_red py-2 px-5 rounded-md" style="margin-right: 10px;">
+                        <ion-icon name="checkbox-outline" class="text-2xl"></ion-icon>
+                        <span id="showings" class="ml-3 font-medium">
+                            Book Tickets
+                        </span>
+                    </a>
+                </div>
+                {% endfor %}
+
         </div>
     </section>
     
-    
 </main>
+<style>
+    html {
+        scroll-behavior: smooth;
+      }
+</style>
 <script>
     const nav = document.querySelector('nav')
 
@@ -53,6 +80,12 @@
             
         }
     })
+
+    // autoplay video
+    function playTrailer() {
+        document.getElementById("player").style.display = "block";
+    }
+
 
 </script>
 {% endblock content %}

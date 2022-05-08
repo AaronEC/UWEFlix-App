@@ -3,50 +3,46 @@
 
 {% block content %}
 <main class='bg-primary_black min-h-screen w-full'>
-    <section class="h-screen relative bg-no-repeat pb-8 pl-6 flex justify-left items-end bg-cover" style="background-image: url('{% static 'assets/Movielists.jpg' %}');">
-        <div class="bg-gray-900 bg-opacity-70 py-8 px-4 w-8/12 rounded-md">
-            <h2 class="text-6xl font-semibold text-white my-4">
-                Welcome
-            </h2>
-            <p class=" w-11/12 md:w-5/12 font-medium text-white my-4">
-                Please choose from our selection of movies below. Here you will find more detail, showing times and ticket prices. All movies are age appropriate to your profile.
-            </p>
-            {% comment %} <div class="flex my-4">
 
-                <button class="flex items-center bg-white py-2 px-5 rounded-md">
-                    <ion-icon name="play" class="text-2xl"></ion-icon>
-                    <span class="ml-3 font-medium">
-                        Play
-                    </span>
-                </button>
-
-                <button class="ml-4 text-white flex items-center bg-gray-500 bg-opacity-80 py-2 px-5 rounded-md">
-                    
-                    <ion-icon name="information-circle-outline" class="text-2xl" ></ion-icon>
-                    <span class="ml-3 font-medium">
-                        More Info
-                    </span>
-                </button>
-            </div> {% endcomment %}
+<section class="h-screen relative bg-no-repeat pb-8 pl-6 flex justify-left items-end bg-cover" style="background-image: url('{% static 'assets/Movielists.jpg' %}');">
+    <div class="bg-gray-900 bg-opacity-70 py-8 px-4 w-8/12 rounded-md">
+        <h2 class="text-6xl font-semibold text-white my-4">
+            Welcome
+        </h2>
+        <p class=" w-11/12 md:w-5/12 font-medium text-white my-4">
+            Please choose from our selection of movies below. Here you will find more detail, showing times and ticket prices. All movies are age appropriate to your profile.
+        </p>
+        <div class="flex my-4">
+            <a href="#movies" class="flex items-center bg-black py-2 px-5 rounded-md">
+                <ion-icon name="play" class="text-2xl"></ion-icon>
+                <span id="movies" class="ml-3 font-medium">
+                    View Movies
+                </span>
+            </a>
         </div>
-    </section> 
-    <section class='bg-primary_black  min-h-screen flex justify-center py-10'>
-        <div class="p-8 w-10/12 relative" >
-            <h2 class="text-gray-200 text-2xl font-medium">
-                Our Movie Showings:
-            </h2>
-            <div class="flex justify-center  items-center min-w-full  movie_lis">
-                {% for movie in movies %}
-                <a href="{% url 'uweflixapp:movie-detail' movie_id=movie.uuid %}">
-                    <div class=" h-40 m-4  bg-blue-500 flex-shrink-0 rounded-md cursor-pointer w-40">
-                        <img src="{{ movie.image.url }}" class="w-full h-full " alt="">
-                    </div>
-                </a>
-                {% endfor %}
-            
-            </div>
+    </div>
+</section>
+<section class='bg-primary_black  min-h-screen flex justify-center p-20'>
+    <div class="p-8 w-10/12 relative" >
+        <h2 class="text-gray-200 text-2xl font-medium">
+            Currently Playing Movies:
+        </h2>
+        <div class="flex justify-center  items-center min-w-full  movie_lis">
+            {% for movie in movies %}
+            <a href="{% url 'uweflixapp:movie-detail' movie_id=movie.uuid %}">
+                <div class="rounded-md cursor-pointer w-auto">
+                    <img src="{{ movie.poster.url }}" class="w-full h-full" alt="" style="max-width: 256px; margin: 20px;">
+                </div>
+            </a>
+            {% endfor %}
+        
         </div>
-    </section>
-    
+    </div>
+</section>
 </main>
+<style>
+    html {
+        scroll-behavior: smooth;
+      }
+</style>
 {% endblock content %}
