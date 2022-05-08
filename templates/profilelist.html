@@ -10,7 +10,7 @@
     <div class="flex flex-wrap justify-center items-center w-10/12  md:w-6/12">
 
         {% for profile in profiles %}
-        <a href=" ">
+        <a href="{% url 'uweflixapp:movie-list' profile_id=profile.uuid %}">
             <div class="w-32 h-32 m-4  bg-blue-500 rounded-md cursor-pointer">
                 <p class="text-center font-extrabold" style="font-size: 68px; font-weight: bold;">{{ profile.name|slice:":1" }}</p>
                 <p class="text-center">{{ profile.name }}</p>
