@@ -101,6 +101,18 @@
 							</div>
 							{{form.last_name}}
 						</div>
+						<div class="input-group mb-3">
+							<div class="input-group-append">
+								<span class="input-group-text"><i class="fas fa-user"></i></span>
+							</div>
+							{{form.rep_id}}
+						</div>
+						<div class="input-group mb-3">
+							<div class="input-group-append">
+								<span class="input-group-text"><i class="fas fa-user"></i></span>
+							</div>
+							{{form.address}}
+						</div>
 						<div class="input-group mb-2">
 							<div class="input-group-append">
 								<span class="input-group-text"><i class="fas fa-key"></i></span>
@@ -139,8 +151,10 @@
 		form_fields[2].placeholder='Email..';
 		form_fields[3].placeholder='First name..';
 		form_fields[4].placeholder='Last name..';
-		form_fields[5].placeholder='Enter password...';
-		form_fields[6].placeholder='Re-enter Password...';
+		form_fields[5].placeholder='Representative ID..';
+		form_fields[6].placeholder='Address..';
+		form_fields[7].placeholder='Enter password...';
+		form_fields[8].placeholder='Re-enter Password...';
 
 
 		for (var field in form_fields){	

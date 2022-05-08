@@ -5,20 +5,35 @@ from django.contrib.auth.models import PermissionsMixin, AbstractBaseUser, BaseU
 from tkinter import CASCADE
 from unicodedata import name
 from django.db import models
-from django.core.validators import MaxValueValidator, MinValueValidator
 
 
 
 class User_manager(BaseUserManager):
-    def create_user(self, username, email, first_name, last_name, user_type, password):
+    def create_user(self, username, email, first_name, last_name, rep_id, student_id, address, password):
         email = self.normalize_email(email)
-        user = self.model(username=username, email=email, first_name=first_name, last_name=last_name, user_type=user_type)
+        user = self.model(username=username, email=email, first_name=first_name, last_name=last_name, rep_id=rep_id, student_id=student_id, address=address)
         user.set_password(password)
         user.save(using=self.db)
         return user
 
-    def create_superuser(self, username, email, password, first_name=None, last_name=None, user_type=None):
-        user = self.create_user(username=username, email=email, first_name=first_name, last_name=last_name, user_type=user_type, password=password)
+    def create_rep(self, username, email, first_name, last_name, rep_id, address, password):
+        user = self.create_user(username, email, first_name, last_name, rep_id, address, password)
+
+        user.is_rep = True
+        user.save(using=self._db)
+
+        return user
+
+    def create_student(self, username, email, first_name, last_name, password):
+        user = self.create_user(username, email, first_name, last_name, password)
+
+        user.is_student = True
+        user.save(using=self._db)
+
+        return user
+
+    def create_superuser(self, username, email, password, first_name=None, last_name=None):
+        user = self.create_user(username=username, email=email, first_name=first_name, last_name=last_name, password=password)
         user.is_superuser = True
         user.is_staff = True
         user.save()
@@ -29,18 +44,26 @@ class User(PermissionsMixin, AbstractBaseUser):
     email = models.EmailField(max_length=32)
     first_name = models.CharField(max_length=32, blank=True, null=True)
     last_name = models.CharField(max_length=32, blank=True, null=True)
-    user_type_choices = [("Student", "Student"), ("Representative", "Representative")]
-    user_type = models.CharField(choices=user_type_choices, default="Student", max_length=14)
-
+    rep_id = models.CharField(max_length=32, blank=True, null=True)
+    street_number = models.IntegerField(null=True)
+    street = models.CharField(max_length=200, null=True)
+    city = models.CharField(max_length=200, null=True)
+    postcode = models.CharField(max_length=200, null=True)
+    telephone = models.IntegerField(null=True)
+    mobile = models.IntegerField(null=True)
+    is_rep = models.BooleanField(default=False)
+    is_student = models.BooleanField(default=False)
     is_active = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)
-    REQUIRED_FIELDS = ["email", "first_name", "last_name", "user_type"]
+    address = models.CharField(max_length=32, blank=True, null=True)
+    REQUIRED_FIELDS = ["email", "first_name", "last_name"]
     USERNAME_FIELD = "username"
     objects = User_manager()
 
     def __str__(self):
         return self.username
         
+
 
 class ClubRepresentative(models.Model):
     club_rep_id = models.CharField(max_length=6, null=True, unique=True)
@@ -60,7 +83,7 @@ class UniversityClub(models.Model):
     telephone = models.IntegerField(null=True)
     mobile = models.IntegerField(null=True)
     email = models.CharField(max_length=200, null=True)
-    club_rep = models.ForeignKey(ClubRepresentative, null=True, on_delete=models.SET_NULL)
+    club_rep = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
     debit_amount = models.IntegerField(null=True, default=0)
 
     def __str__(self):

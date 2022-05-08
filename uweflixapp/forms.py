@@ -7,10 +7,15 @@ from .models import Booking, Film, Showing, UniversityClub, ClubRepresentative, 
 
 
 
-class CustomUserCreationForm(UserCreationForm):
+class CustomRepCreationForm(UserCreationForm):
     class Meta:
         model = User
-        fields = ("username", "email", "first_name", "last_name", "user_type")
+        fields = ("username", "email", "first_name", "last_name", "rep_id", "address")
+
+class CustomStudentCreationForm(UserCreationForm):
+    class Meta:
+        model = User
+        fields = ("username", "email", "first_name", "last_name")
 
 
 class FilmForm(ModelForm):

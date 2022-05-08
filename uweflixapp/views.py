@@ -12,7 +12,7 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout, get_user_model
 from django.contrib.auth.models import Group
 from django.contrib.auth.decorators import login_required
-from .forms import BookingForm, CustomUserCreationForm
+from .forms import BookingForm, CustomRepCreationForm, CustomStudentCreationForm
 from django.contrib.auth.decorators import user_passes_test
 
 # Create your views here.
@@ -27,23 +27,27 @@ def must_be_cinema_manager(user):
 
 #@user_passes_test(must_be_cinema_manager)
 
+def registerChoice(request):
+    return render(request, 'uweflixapp/register_choice.html')
+
 # registers users
 def registerPage(request):
     if request.user.is_authenticated:
         return redirect('home')
     else:
-        form = CustomUserCreationForm()
+        form = CustomStudentCreationForm()
         if request.method == 'POST':
-            form = CustomUserCreationForm(request.POST)
+            form = CustomStudentCreationForm(request.POST)
 
             if form.is_valid():
                 user = form.save()
                 user.is_active = False
+                user.is_student = True
                 user.save()
-                if user.user_type == "Student":
+                if user.is_student == True:
                     g = Group.objects.get(name='Student')
                     g.user_set.add(user)
-                elif user.user_type == "Student":
+                elif user.is_rep == True:
                     g = Group.objects.get(name='Representative')
                     g.user_set.add(user)
                 user = form.cleaned_data.get('username')
@@ -53,6 +57,35 @@ def registerPage(request):
 
         context = {'form':form}
         return render(request, 'uweflixapp/register.html', context)
+
+
+# registers users
+def registerPageRep(request):
+    if request.user.is_authenticated:
+        return redirect('home')
+    else:
+        form = CustomRepCreationForm()
+        if request.method == 'POST':
+            form = CustomRepCreationForm(request.POST)
+
+            if form.is_valid():
+                user = form.save()
+                user.is_rep = True
+                user.is_active = False
+                user.save()
+                if user.is_student == True:
+                    g = Group.objects.get(name='Student')
+                    g.user_set.add(user)
+                elif user.is_rep == True:
+                    g = Group.objects.get(name='Representative')
+                    g.user_set.add(user)
+                user = form.cleaned_data.get('username')
+                messages.success(request, 'Acount was created for ' + user)
+
+                return redirect('login')
+
+        context = {'form':form}
+        return render(request, 'uweflixapp/register_rep.html', context)
 
 # logs in users
 def loginPage(request):
