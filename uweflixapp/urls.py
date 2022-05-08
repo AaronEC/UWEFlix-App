@@ -1,8 +1,9 @@
-from django.urls import path
-from .views import Home
+from django.urls import path, include
+from .views import Home, ProfileList
 
 app_name = 'uweflixapp'
 
 urlpatterns = [
-    path('', Home, name="home")
+    path('', Home.as_view(), name="Home"),
+    path('profiles/', ProfileList.as_view(), name="profile-list")
     ]
