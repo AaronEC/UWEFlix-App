@@ -39,17 +39,23 @@ class UserManager(BaseUserManager):
         user = self.create_user(
             email,
             password=password,
-            is_staff=True
         )
+        user.club_representitive = True
+        user.save(using=self._db)
         return user
+
     
-    def create_superuser(self, email, password=None):
+    def create_superuser(self, email, password):
+        """
+        Creates and saves a superuser with the given email and password.
+        """
         user = self.create_user(
             email,
             password=password,
-            is_staff=True,
-            is_admin=True
         )
+        user.club_representitive = True
+        user.account_manager = True
+        user.save(using=self._db)
         return user
 
 class CustomUser(AbstractBaseUser):
@@ -123,6 +129,8 @@ class Showing(models.Model):
     screen = models.IntegerField()
     movie = models.ManyToManyField('Movie')
     price = models.IntegerField()
+    seats = models.IntegerField()
+    uuid  = models.UUIDField(default=uuid.uuid4)
     
     def __str__(self) -> str:
         return f"{self.name} - Screen {self.screen} {self.date}."

@@ -45,6 +45,25 @@ class MovieDetail(View):
         except Movie.DoesNotExist:
             return redirect('uweflixapp:profile-list')
         
+method_decorator(login_required, name='dispatch')
+class SeatList(View):
+    def get(self, request, showing_id, *args, **kwargs):
+        
+        showing = Showing.objects.get(uuid=showing_id)
+        
+        seats = showing.seats
+        tally = ""
+        screen = showing.screen
+        
+        for x in range(seats):
+            tally = tally + "1"
+
+        context = {
+            'seats':tally,
+            'screen':screen
+        }
+        return render(request, 'seatlist.html', context)
+        
 class RegisterView(CreateView):
     form_class = RegisterForm
     template_name = 'accounts/register.html'

@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<section class='bg-primary_black min-h-screen py-20 md:py-0 flex-col flex justify-center items-center' style="background-image: url('{% static 'assets/background2.jpg' %}')">
+    <h2 class="text-center font-medium text-5xl my-4 text-gray-100">
+        Please select your seat:
+    </h2>
+
+    <h4 class="text-center font-medium text-2xl my-4 text-gray-100">
+        Screen {{ screen }}
+    </h4>
+
+    <div class="flex flex-wrap justify-center items-center w-10/12  md:w-12/12" style="max-width 1024px; min-width: 1024px; width: 1024px;">
+        {% for i in seats|make_list %}
+
+        <div class="m-4 bg-blue-500 rounded-md cursor-pointer" style="width: 36px; height: 36px;">
+            <p class="justify-center text-center">{{ forloop.counter }}</p>
+        </div>
+
+        {% endfor %}
+    </div>
+
+    <h4 class="text-center font-medium text-2xl my-4 text-gray-100">
+        Exit
+    </h4>
+
+    <div>
+        {% if request.user.is_staff %}
+        <a href="{% url 'account_logout' %}" class='bg-primary_red py-1 px-3 text-white md:text-lg rounded-md'>
+            Get Discount
+        </a>
+        {% endif %}
+    </div>
+
+</section>
+{% endblock content %}

@@ -43,7 +43,7 @@
                             Screen: {{ showing.screen }}
                         </span>
                     </a>
-                    <a class="flex items-center bg-primary_red py-2 px-5 rounded-md" style="margin-right: 10px;">
+                    <a href="{% url 'uweflixapp:seat-list' showing_id=showing.uuid %}" class="flex items-center bg-primary_red py-2 px-5 rounded-md" style="margin-right: 10px;">
                         <ion-icon name="checkbox-outline" class="text-2xl"></ion-icon>
                         <span id="showings" class="ml-3 font-medium">
                             Book Tickets
