@@ -1,4 +1,3 @@
-from dataclasses import field
 from django.forms import ModelForm
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
@@ -28,6 +27,10 @@ class ClubForm(ModelForm):
         model = UniversityClub
         fields = '__all__'
 
+    def __init__(self, *args, **kwargs):
+        super(ClubForm, self).__init__(*args, **kwargs)
+        self.fields['club_rep'].queryset = User.objects.filter(is_rep=True)# or something else
+
 class ScreenForm(forms.ModelForm):
     class Meta:
         model = Screen
@@ -37,6 +40,7 @@ class ShowingForm(ModelForm):
     class Meta:
         model = Showing
         fields = '__all__'
+        widgets = {'available_seats': forms.HiddenInput()}
 
 class ClubRepresentativeForm(ModelForm):
     class Meta:

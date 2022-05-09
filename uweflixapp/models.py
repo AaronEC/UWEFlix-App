@@ -1,11 +1,6 @@
-from pyexpat import model
-from statistics import quantiles
-from zoneinfo import available_timezones
-from django.contrib.auth.models import PermissionsMixin, AbstractBaseUser, BaseUserManager
-from tkinter import CASCADE
-from unicodedata import name
-from django.db import models
 
+from django.contrib.auth.models import PermissionsMixin, AbstractBaseUser, BaseUserManager
+from django.db import models
 
 
 class User_manager(BaseUserManager):
@@ -45,12 +40,12 @@ class User(PermissionsMixin, AbstractBaseUser):
     first_name = models.CharField(max_length=32, blank=True, null=True)
     last_name = models.CharField(max_length=32, blank=True, null=True)
     rep_id = models.CharField(max_length=32, blank=True, null=True)
-    street_number = models.IntegerField(null=True)
-    street = models.CharField(max_length=200, null=True)
-    city = models.CharField(max_length=200, null=True)
-    postcode = models.CharField(max_length=200, null=True)
-    telephone = models.IntegerField(null=True)
-    mobile = models.IntegerField(null=True)
+    street_number = models.IntegerField(blank=True, null=True)
+    street = models.CharField(max_length=200, blank=True, null=True)
+    city = models.CharField(max_length=200, blank=True, null=True)
+    postcode = models.CharField(max_length=200, blank=True, null=True)
+    telephone = models.IntegerField(blank=True, null=True)
+    mobile = models.IntegerField(blank=True, null=True)
     is_rep = models.BooleanField(default=False)
     is_student = models.BooleanField(default=False)
     is_active = models.BooleanField(default=False)
@@ -119,8 +114,9 @@ class Showing(models.Model):
     date = models.DateField(null=True, blank=False)
     time = models.TimeField(null=True, blank=False)
     screen = models.ForeignKey(Screen, on_delete=models.CASCADE, null=False, blank=False)
-    available_seats = models.IntegerField(default=200, blank=False, null=False)
-    
+    available_seats = models.IntegerField(default=0, blank=False, null=False)
+
+
     def __str__(self):
         return self.film.title
 
@@ -135,8 +131,8 @@ class Account(models.Model):
 
 class Booking(models.Model):
     customer = models.ForeignKey(User, on_delete=models.CASCADE, null=True, default=None)
-    adult_ticket = models.PositiveIntegerField(default=0, null=False)
-    child_ticket = models.PositiveIntegerField(default=0, null=False)
-    student_ticket = models.PositiveIntegerField(default=0, null=False)
+    adult_ticket = models.IntegerField(default=0, null=False, blank=True)
+    child_ticket = models.IntegerField(default=0, null=False, blank=True)
+    student_ticket = models.IntegerField(default=0, null=False, blank=True)
     total_cost = models.FloatField(default=0)
     date_created = models.DateTimeField(auto_now_add=True)

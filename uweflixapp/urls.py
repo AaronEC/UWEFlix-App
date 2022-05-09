@@ -37,13 +37,8 @@ urlpatterns = [
     path('view_showings/', views.viewShowings, name="view_showings"),
     path('select_showing/<str:pk>/', views.selectShowing, name="select_showing"),
     path('place_order/<str:pk>/', views.placeOrder, name="place_order"),
-    path('create_booking/', views.createBooking, name="create_booking"),
     
-    path('view_transactions/', views.viewTransactions, name="view_transactions"),
     path('user_transactions/', views.viewCustomers, name="user_transactions"),
 
     path('view_account/<str:pk>/', views.viewAccount, name="view_account"),
-
-
-    #path('cancel_booking/', views.cancelBooking, name="cancel_booking"),
 ]

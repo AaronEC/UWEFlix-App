@@ -1,4 +1,4 @@
-{% extends 'uweflixapp/main_user.html' %}
+{% extends 'uweflixapp/main.html' %}
 
 {% block content %}
 
@@ -22,7 +22,6 @@
 						{{ date }}
 						{{ time }}
 						{{ screen }}
-						{{ available_seats }}
 					</div>
 				</div>
 				
@@ -41,7 +40,6 @@
 								<hr>
 
 								<div class="row bookingForm">
-
 									<div class="col-md-6">
 										<label>Adult Quantity</label>
 										<input type="number" class="form-control" name="adult_ticket" placeholder="Adult Quantity">
@@ -61,6 +59,8 @@
 									<button type="submit" class="btn btn-success w-100">Place Order</button> 
 
 									</div>
+									
+
 								</div>
 							</div>
 	

@@ -15,14 +15,16 @@
 						<tr>
 							<th>Username</th>
                             <th>Email</th>
-							<th>User Type</th>
+							<th>Student</th>
+							<th>Representative</th>
 						</tr>
 
                         {% for i in customer %}
 							<tr>
 								<td>{{i.username}}</td>
                                 <td>{{i.email}}</td>
-                                <td>{{i.user_type}}</td>
+                                <td>{{i.is_student}}</td>
+								<td>{{i.rep}}</td>
 								<td><a class="btn btn-sm btn-info" href="{% url 'approve_user' i.id %}">Approve</a></td>
 								<td><a class="btn btn-sm btn-danger" href="{% url 'deny_user' i.id %}">Deny</a></td>
 							</tr>	
