@@ -6,6 +6,7 @@ from pyexpat import model
 from turtle import title
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
+from django.core.validators import MaxValueValidator, MinValueValidator
 import uuid
 
 # Categorisation tuples, format (backend, frontent)
@@ -91,13 +92,11 @@ class CustomUser(AbstractBaseUser):
     
     def has_perm(self, perm, obj=None):
         "Does the user have a specific model level permission?"
-        # Always yes as using custom model.
-        return True
+        return True if self.account_manager else False
 
     def has_module_perms(self, app_label):
         "Does the user have permissions to view the app `app_label`?"
-        # Always yes as using custom model.
-        return True
+        return True if self.account_manager else False
     
     def __str__(self) -> str:
         return self.email
@@ -124,13 +123,19 @@ class Movie(models.Model):
         return self.title
     
 class Showing(models.Model):
-    name = models.CharField(max_length=1000)
-    date = models.DateTimeField()
-    screen = models.IntegerField()
-    movie = models.ManyToManyField('Movie')
-    price = models.IntegerField()
-    seats = models.IntegerField()
-    uuid  = models.UUIDField(default=uuid.uuid4)
+    name    = models.CharField(max_length=1000)
+    date    = models.DateTimeField()
+    screen  = models.IntegerField()
+    movie   = models.ManyToManyField('Movie')
+    price   = models.IntegerField()
+    seats   = models.IntegerField(
+        default=50,
+        validators=[
+            MaxValueValidator(120),
+            MinValueValidator(1)
+        ]
+     )
+    uuid    = models.UUIDField(default=uuid.uuid4)
     
     def __str__(self) -> str:
         return f"{self.name} - Screen {self.screen} {self.date}."
