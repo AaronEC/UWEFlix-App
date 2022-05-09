@@ -64,6 +64,13 @@ class CustomUser(AbstractBaseUser):
     active       = models.BooleanField(default=True) # Account enabled
     club_representitive = models.BooleanField(default=False) # club rep account
     account_manager    = models.BooleanField(default=False) # account manager (superuser)
+    discount   = models.IntegerField(
+        default=0,
+        validators=[
+            MaxValueValidator(100),
+            MinValueValidator(0)
+        ]
+     )
     
     USERNAME_FIELD = 'email'
     REQUIRED_FILEDS = []    # Not used now maybe later
@@ -136,6 +143,7 @@ class Showing(models.Model):
         ]
      )
     uuid    = models.UUIDField(default=uuid.uuid4)
+    COVID_toggle = models.BooleanField(default=False)
     
     def __str__(self) -> str:
         return f"{self.name} - Screen {self.screen} {self.date}."

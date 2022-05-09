@@ -55,17 +55,23 @@ class SeatList(View):
         tally = ""
         screen = showing.screen
         price = showing.price
+        discount = request.user.discount
+        social_distance = showing.COVID_toggle
         
         if request.user.is_staff:
-            price = f"{price / 2} (Club dicount applied!)"
+            price = f"{price - (price * (discount / 100))} ({discount}% Club dicount applied!)"
         
         for x in range(seats):
             tally = tally + "1"
-
+        if social_distance:
+            tally= tally[:len(tally)//2]
+            print(tally)
+                
         context = {
             'seats':tally,
             'screen':screen,
-            'price':price
+            'price':price,
+            'social_distance':social_distance
         }
         return render(request, 'seatlist.html', context)
         

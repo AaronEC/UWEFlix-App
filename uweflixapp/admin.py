@@ -20,7 +20,7 @@ class UserAdmin(BaseUserAdmin):
     list_display = ['email', 'club_representitive', 'account_manager']
     list_filter = ['active', 'club_representitive', 'account_manager']
     fieldsets = (
-        (None, {'fields': ('email', 'password')}),
+        (None, {'fields': ('email', 'password', 'discount')}),
         # ('Personal info', {'fields': ()}),
         ('Permissions', {'fields': ('active', 'club_representitive', 'account_manager',)}),
     )
