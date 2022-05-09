@@ -29,9 +29,9 @@
         </h2>
         <div class="flex justify-center  items-center min-w-full  movie_lis">
             {% for movie in movies %}
-            <a href="{% url 'uweflixapp:movie-detail' movie_id=movie.uuid %}">
+            <a href="{% url 'uweflixapp:movie-detail' movie_id=movie.uuid %}" style=" margin: 10px;">
                 <div class="rounded-md cursor-pointer w-auto">
-                    <img src="{{ movie.poster.url }}" class="w-full h-full" alt="" style="max-width: 256px; margin: 20px;">
+                    <img src="{{ movie.poster.url }}" class="w-full h-full" alt="" style="max-width: 256px;">
                 </div>
             </a>
             {% endfor %}

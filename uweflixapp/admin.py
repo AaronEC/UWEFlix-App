@@ -17,12 +17,12 @@ class UserAdmin(BaseUserAdmin):
     # The fields to be used in displaying the User model.
     # These override the definitions on the base UserAdmin
     # that reference specific fields on auth.User.
-    list_display = ['email', 'club_representitive', 'account_manager']
-    list_filter = ['active', 'club_representitive', 'account_manager']
+    list_display = ['email', 'admin', 'club_rep', 'cinema_manager', 'account_manager']
+    list_filter = ['active', 'admin', 'club_rep', 'cinema_manager', 'account_manager']
     fieldsets = (
         (None, {'fields': ('email', 'password', 'discount')}),
         # ('Personal info', {'fields': ()}),
-        ('Permissions', {'fields': ('active', 'club_representitive', 'account_manager',)}),
+        ('Permissions', {'fields': ('active', 'staff', 'admin', 'club_rep', 'cinema_manager', 'account_manager')}),
     )
     # add_fieldsets is not a standard ModelAdmin attribute. UserAdmin
     # overrides get_fieldsets to use this attribute when creating a user.
@@ -36,9 +36,34 @@ class UserAdmin(BaseUserAdmin):
     ordering = ['email']
     filter_horizontal = ()
     
+class CustomUserAdmin(UserAdmin):
+    
+    def get_form(self, request, obj=None, **kwargs):
+        
+        form = super().get_form(request, obj, **kwargs)
+        is_superuser = request.user.is_admin
+
+        # if not is_superuser:
+        #     form.base_fields['discount'].disabled = True
+        #     form.base_fields['email'].disabled = True
+        #     form.base_fields['active'].disabled = True
+        #     form.base_fields['staff'].disabled = True
+        #     form.base_fields['admin'].disabled = True
+            
+        return form
+
+    def has_delete_permission(self, request, obj=None):
+        return True if request.user.is_admin else True if request.user.is_amanager else False
+    
+    def has_add_permission(self, request, obj=None):
+        return True if request.user.is_admin else True if request.user.is_amanager else False
+    
+    def has_change_permission(self, request, obj=None):
+        return True if request.user.is_admin else True if request.user.is_amanager else False
+    
 # Remove Group Model from admin. We're not using it.
 admin.site.unregister(Group)
 
 admin.site.register(Movie)
-admin.site.register(CustomUser, UserAdmin)
+admin.site.register(CustomUser, CustomUserAdmin)
 admin.site.register(Showing)

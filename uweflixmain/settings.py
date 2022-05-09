@@ -139,6 +139,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'uweflixapp.CustomUser' #Changes to custom user model
 
 #All-auth settings
+SOCIALACCOUNT_AUTO_SIGNUP = False
 
 AUTHENTICATION_BACKENDS = [
     # Needed to login by username in Django admin, regardless of `allauth`

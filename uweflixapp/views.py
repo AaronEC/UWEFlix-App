@@ -57,9 +57,10 @@ class SeatList(View):
         price = showing.price
         discount = request.user.discount
         social_distance = showing.COVID_toggle
+        movie = showing.movie
         
-        if request.user.is_staff:
-            price = f"{price - (price * (discount / 100))} ({discount}% Club dicount applied!)"
+        if request.user.is_staff or request.user.is_rep:
+            price = f"{round(price - (price * (discount / 100)), 2)} ({discount}% Club dicount applied!)"
         
         for x in range(seats):
             tally = tally + "1"
@@ -71,7 +72,8 @@ class SeatList(View):
             'seats':tally,
             'screen':screen,
             'price':price,
-            'social_distance':social_distance
+            'social_distance':social_distance,
+            'movie': movie
         }
         return render(request, 'seatlist.html', context)
         

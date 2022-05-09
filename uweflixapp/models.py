@@ -9,16 +9,6 @@ from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from django.core.validators import MaxValueValidator, MinValueValidator
 import uuid
 
-# Categorisation tuples, format (backend, frontent)
-USER_TYPE = (
-    ('account_manager', 'Account Manager'),
-    ('club_rep', 'Club Rep'),
-    ('student', 'Student')
-)
-MOVIE_CHOICES = (
-    ('seasonal', 'Seasonal'),
-    ('single', 'Single')
-)
 
 class UserManager(BaseUserManager):
     def create_user(self, email, password=None, is_active=True, is_staff=False, is_admin=False):
@@ -41,7 +31,7 @@ class UserManager(BaseUserManager):
             email,
             password=password,
         )
-        user.club_representitive = True
+        user.staff = True
         user.save(using=self._db)
         return user
 
@@ -54,17 +44,20 @@ class UserManager(BaseUserManager):
             email,
             password=password,
         )
-        user.club_representitive = True
-        user.account_manager = True
+        user.staff = True
+        user.admin = True
         user.save(using=self._db)
         return user
 
 class CustomUser(AbstractBaseUser):
     email        = models.EmailField(max_length=255, unique=True)
     active       = models.BooleanField(default=True) # Account enabled
-    club_representitive = models.BooleanField(default=False) # club rep account
-    account_manager    = models.BooleanField(default=False) # account manager (superuser)
-    discount   = models.IntegerField(
+    staff        = models.BooleanField(default=False)
+    admin        = models.BooleanField(default=False) # superuser
+    club_rep = models.BooleanField(default=False)
+    cinema_manager = models.BooleanField(default=False)
+    account_manager = models.BooleanField(default=False)
+    discount     = models.IntegerField(
         default=0,
         validators=[
             MaxValueValidator(100),
@@ -86,27 +79,43 @@ class CustomUser(AbstractBaseUser):
     # Again not used but may be useful later #
     
     @property
+    def is_rep(self):
+        return self.club_rep
+    
+    @property
+    def is_cmanager(self):
+        return self.cinema_manager
+    
+    @property
+    def is_amanager(self):
+        return self.account_manager
+    
+    @property
     def is_active(self):
         return self.active
     
     @property
     def is_staff(self):
-        return self.club_representitive
+        return self.staff
     
     @property
     def is_admin(self):
-        return self.account_manager
+        return self.admin
     
     def has_perm(self, perm, obj=None):
         "Does the user have a specific model level permission?"
-        return True if self.account_manager else False
+        return True #if self.admin else False
 
     def has_module_perms(self, app_label):
         "Does the user have permissions to view the app `app_label`?"
-        return True if self.account_manager else False
+        return True #if self.admin else False
+    
+    def has_delete_permission(self, request, obj=None): # note the obj=None
+        return False
     
     def __str__(self) -> str:
         return self.email
+
 
 class Profile(models.Model):
     """This may be used later to add additional user information without 
@@ -130,12 +139,11 @@ class Movie(models.Model):
         return self.title
     
 class Showing(models.Model):
-    name    = models.CharField(max_length=1000)
     date    = models.DateTimeField()
-    screen  = models.IntegerField()
-    movie   = models.ManyToManyField('Movie')
-    price   = models.IntegerField()
-    seats   = models.IntegerField(
+    screen  = models.PositiveIntegerField()
+    movie   = models.ForeignKey('Movie', on_delete = models.CASCADE)
+    price   = models.FloatField()
+    seats   = models.PositiveIntegerField(
         default=50,
         validators=[
             MaxValueValidator(120),
@@ -146,4 +154,4 @@ class Showing(models.Model):
     COVID_toggle = models.BooleanField(default=False)
     
     def __str__(self) -> str:
-        return f"{self.name} - Screen {self.screen} {self.date}."
+        return f"{self.movie} - Screen {self.screen} {self.date}."
