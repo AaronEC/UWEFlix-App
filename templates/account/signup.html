@@ -13,8 +13,8 @@
                 {% if form.errors %}
                 <p class="text-primary_red" style="color: red;">
                     {{ form.errors.email }}
-                    {{ form.errors.password1 }}
-                    {{ form.errors.password2 }}
+                    {{ form.errors.password }}
+                    {{ form.errors.password_2 }}
                 </p>
                 {% endif %}
             </div>
@@ -28,13 +28,13 @@
                 <Label class='text-lg font-medium mb-3'>
                     Password
                 </Label>
-                <input class="p-2 bg-gray-200 rounded-sm text-gray-900 outline-none block w-full" type="password" name="password1" id="id_password1" placeholder="Password">
+                <input class="p-2 bg-gray-200 rounded-sm text-gray-900 outline-none block w-full" type="password" name="password" id="id_password" placeholder="Password">
             </div>
             <div class='my-3'> 
                 <Label class='text-lg font-medium mb-3'>
                     Confirm Password
                 </Label>
-                <input class="p-2 bg-gray-200 rounded-sm text-gray-900 outline-none block w-full" type="password" name="password2" id="id_password2" placeholder="Password">
+                <input class="p-2 bg-gray-200 rounded-sm text-gray-900 outline-none block w-full" type="password" name="password_2" id="id_password_2" placeholder="Password">
             </div>
             {% if redirect_field_value %}
                 <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />

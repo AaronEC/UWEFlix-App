@@ -136,7 +136,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-AUTH_USER_MODEL = 'uweflixapp.CustomUser'
+AUTH_USER_MODEL = 'uweflixapp.CustomUser' #Changes to custom user model
 
 #All-auth settings
 
@@ -154,7 +154,8 @@ LOGIN_URL = 'login'
 
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
 ACCOUNT_EMAIL_REQUIRED = True
-ACCOUNT_EMAIL_VERIFICATION = 'none'
+ACCOUNT_UNIQUE_EMAIL = True
+ACCOUNT_USER_MODEL_USERNAME_FIELD = None
 ACCOUNT_USERNAME_REQUIRED = False
 LOGIN_REDIRECT_URL= '/'
 ACCOUNT_SIGNUP_REDIRECT_URL = '/'
