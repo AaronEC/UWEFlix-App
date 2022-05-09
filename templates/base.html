@@ -13,11 +13,15 @@
 </head>
 <body class="flex flex-col min-h-screen bg-black text-gray-100" style="max-height: 100px;">
     <nav class="flex justify-between items-center py-3 px-4 fixed w-full z-50 bg-black ">
-        <div class="w-6/12">
+        <div style="margin: 0px; padding 0px; width: 94px;">
             <a href="/">
-            <img src="{% static 'assets/uweflix.png' %}" alt="logo" class="w-5/12 md:w-2/12">
+            <img src="{% static 'assets/uweflix.png' %}" alt="logo" style="width:94px;">
             </a>
         </div>
+
+        <h4 class="flex flex-wrap justify-center items-center font-medium text-3xl my-4 text-gray-100" style="padding: 20px; margin: 10px;">
+            UWE Movie Magic!
+        </h4>
 
         <div>
             {% if request.user.is_authenticated %}

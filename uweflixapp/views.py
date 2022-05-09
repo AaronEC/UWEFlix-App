@@ -54,13 +54,18 @@ class SeatList(View):
         seats = showing.seats
         tally = ""
         screen = showing.screen
+        price = showing.price
+        
+        if request.user.is_staff:
+            price = f"{price / 2} (Club dicount applied!)"
         
         for x in range(seats):
             tally = tally + "1"
 
         context = {
             'seats':tally,
-            'screen':screen
+            'screen':screen,
+            'price':price
         }
         return render(request, 'seatlist.html', context)
         

@@ -3,15 +3,18 @@
 
 {% block content %}
 <section class='bg-primary_black min-h-screen py-20 md:py-0 flex-col flex justify-center items-center' style="background-image: url('{% static 'assets/background2.jpg' %}')">
-    <h2 class="text-center font-medium text-5xl my-4 text-gray-100">
-        Please select your seat:
+    <h2 class="text-center font-medium text-5xl my-4 text-gray-100" style="margin-top:50px;">
+        Please Select Your Seat:
     </h2>
 
-    <h4 class="text-center font-medium text-2xl my-4 text-gray-100">
-        Screen {{ screen }}
-    </h4>
+    <div class="container" style="position: relative; text-align: center; color: white;">
+        <img src="{% static 'assets/big-screen_icon.png' %}" alt="Screen icon">
+        <h4 class="text-center font-medium text-4xl my-4 text-gray-100" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+            Screen {{ screen }}
+        </h4>
+    </div>
 
-    <div class="flex flex-wrap justify-center items-center w-10/12  md:w-12/12" style="max-width 1024px; min-width: 1024px; width: 1024px;">
+    <div class="flex flex-wrap justify-center items-center w-10/12 bg-gray-900 py-8 px-4 rounded-md" style="max-width 1024px; min-width: 1024px; width: 1024px;">
         {% for i in seats|make_list %}
 
         <div class="m-4 bg-blue-500 rounded-md cursor-pointer" style="width: 36px; height: 36px;">
@@ -21,17 +24,16 @@
         {% endfor %}
     </div>
 
-    <h4 class="text-center font-medium text-2xl my-4 text-gray-100">
-        Exit
+    <h4 class="flex flex-wrap justify-center items-center font-medium text-1xl my-4 text-gray-100 rounded-md" style="padding: 20px; margin: 10px; background-color: #54585d;">
+        Screen Entance / Exit
     </h4>
 
-    <div>
-        {% if request.user.is_staff %}
-        <a href="{% url 'account_logout' %}" class='bg-primary_red py-1 px-3 text-white md:text-lg rounded-md'>
-            Get Discount
-        </a>
-        {% endif %}
+    <div class="flex flex-wrap justify-center items-center w-10/12 bg-gray-900 py-8 px-4 rounded-md">
+        <h2 class="text-center font-medium text-2xl my-4 text-gray-100">
+            Cost: £{{ price }}
+        </h2>
     </div>
 
 </section>
+
 {% endblock content %}
