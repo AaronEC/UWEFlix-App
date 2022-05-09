@@ -4,6 +4,8 @@ from django.views import View
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from .models import Movie, Showing
+from django.views.generic import CreateView
+from .forms import RegisterForm
 
 class Home(View):
     def get(self, request, *args, **kwargs):
@@ -42,4 +44,8 @@ class MovieDetail(View):
             return render(request, 'moviedetail.html', context)
         except Movie.DoesNotExist:
             return redirect('uweflixapp:profile-list')
-            
+        
+class RegisterView(CreateView):
+    form_class = RegisterForm
+    template_name = 'accounts/register.html'
+    success_url = '/login/'
