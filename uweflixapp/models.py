@@ -1,6 +1,7 @@
 
 from django.contrib.auth.models import PermissionsMixin, AbstractBaseUser, BaseUserManager
 from django.db import models
+from django.core.validators import MaxValueValidator, MinValueValidator
 
 
 class User_manager(BaseUserManager):
@@ -136,3 +137,9 @@ class Booking(models.Model):
     student_ticket = models.IntegerField(default=0, null=False, blank=True)
     total_cost = models.FloatField(default=0)
     date_created = models.DateTimeField(auto_now_add=True)
+
+class Cost(models.Model):
+    adult_cost = models.FloatField(null=False, blank=False)
+    child_cost = models.FloatField(null=False, blank=False)
+    club_discount = models.FloatField(validators=[MinValueValidator(0.0), MaxValueValidator(1.0)], null=False, blank=False)
+    student_discount = models.FloatField(validators=[MinValueValidator(0.0), MaxValueValidator(1.0)], null=False, blank=False)

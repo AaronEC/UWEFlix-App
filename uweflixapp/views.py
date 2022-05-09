@@ -168,6 +168,11 @@ def films(request):
     films = Film.objects.all()
     return render(request, 'uweflixapp/films.html', {'films': films})
 
+# returns films
+def costs(request):
+    costs = Cost.objects.all()
+    return render(request, 'uweflixapp/costss.html', {'costs': costs})
+
 # returns screens
 def screens(request):
     screens = Screen.objects.all()
@@ -329,11 +334,23 @@ def selectShowing(request, pk):
 
 # calculate total price of tickets
 def calcTotalCost(adult_quantity, child_quantity, student_quantity):
-    adult_ticket_cost = 7.0
-    child_ticket_cost = 4.0
-    student_ticket_cost = 5.0
+    cost = Cost.objects.first()
+    adult_ticket_cost = cost.adult_cost
+    child_ticket_cost = cost.child_cost
 
-    total_price = (int(adult_quantity)*adult_ticket_cost)+(int(child_quantity)*child_ticket_cost)+(int(student_quantity)*student_ticket_cost)
+    total_price = (int(adult_quantity)*float(adult_ticket_cost))+(int(child_quantity)*float(child_ticket_cost))+(int(student_quantity)*float(adult_ticket_cost))
+    return total_price
+
+    # calculate total price of tickets for student user
+def calcTotalCostStudent(adult_quantity, child_quantity, student_quantity):
+    cost = Cost.objects.first()
+    adult_ticket_cost = cost.adult_cost
+    child_ticket_cost = cost.child_cost
+    student_discount = cost.student_discount
+    total_student_discount = (int(student_quantity)*float(adult_ticket_cost))*float(student_discount)
+    total_student_price = int(student_quantity)*float(adult_ticket_cost)-total_student_discount
+    
+    total_price = (int(adult_quantity)*float(adult_ticket_cost))+(int(child_quantity)*float(child_ticket_cost))+float(total_student_price)
     return total_price
 
 # calculate total ticket quantity
@@ -367,7 +384,8 @@ def viewAccount(request, pk):
 
 def placeOrder(request, pk):
     #and newbooking.is_valid()
-    DISCOUNT = 0.2
+    cost = Cost.objects.first()
+    CLUB_DISCOUNT = cost.club_discount
     if request.method == "POST":
         # creat instance
         newbooking = Booking()
@@ -407,19 +425,20 @@ def placeOrder(request, pk):
         # check if user is representative
         if request.user.is_rep == True:
             # calculate discount price and add to booking instance
-            discount = calcTotalCost(adult_ticket, child_ticket, student_ticket)*DISCOUNT
+            discount = calcTotalCost(adult_ticket, child_ticket, student_ticket)*float(CLUB_DISCOUNT)
             newbooking.total_cost = calcTotalCost(adult_ticket, child_ticket, student_ticket)-discount
             # calculate total tickets
             total_quantity = calcTotalQuantity(adult_ticket, child_ticket, student_ticket)
             # if less than 10, display message
             if total_quantity < 10:
-                messages.info(request, 'Must book more than 10 tickets')
+                messages.error(request,'Minimum ticket quantity for club booking is 10')
+                return redirect('view_showings')
         # check if user is student
         elif request.user.is_student == True:
             # calculate discount price and add to booking instance
-            discount = calcTotalCost(adult_ticket, child_ticket, student_ticket)*DISCOUNT
-            newbooking.total_cost = calcTotalCost(adult_ticket, child_ticket, student_ticket)-discount
-        else:
+            #discount = calcTotalCostStudent(adult_ticket, child_ticket, student_ticket)
+            newbooking.total_cost = calcTotalCostStudent(adult_ticket, child_ticket, student_ticket)#-discount
+        elif request.user.is_staff:
             # calculate price and add to booking instance
             newbooking.total_cost = calcTotalCost(adult_ticket, child_ticket, student_ticket)
 
@@ -441,7 +460,7 @@ def placeOrder(request, pk):
                 return redirect('view_showings')
         else:
             # cancel booking and redirect
-            messages.add_message(request, messages.INFO, 'Insufficient seats available')
+            messages.error(request,'Insufficient Tickets')
             return redirect('view_showings')
 
 

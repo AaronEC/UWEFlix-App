@@ -2,7 +2,7 @@ from django.forms import ModelForm
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django import forms
-from .models import Booking, Film, Showing, UniversityClub, ClubRepresentative, Account, Screen, User
+from .models import Booking, Film, Showing, UniversityClub, ClubRepresentative, Account, Screen, User, Cost
 
 
 
@@ -56,4 +56,10 @@ class AccountForm(forms.ModelForm):
 class BookingForm(forms.ModelForm):
     class Meta:
         model = Booking
+        fields = '__all__'
+
+
+class CostForm(forms.ModelForm):
+    class Meta:
+        model = Cost
         fields = '__all__'

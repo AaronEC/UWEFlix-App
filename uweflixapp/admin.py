@@ -9,6 +9,7 @@ from .models import *
 
 admin.site.register(User)
 admin.site.register(Film)
+admin.site.register(Cost)
 admin.site.register(Showing)
 admin.site.register(UniversityClub)
 admin.site.register(ClubRepresentative)
