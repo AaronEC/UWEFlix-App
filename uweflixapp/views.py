@@ -1,4 +1,5 @@
 import datetime
+from turtle import distance
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout, get_user_model
@@ -466,7 +467,6 @@ def placeOrder(request, pk):
 
 # toggle social distancing
 def toggledistancing(request):
-    social_distancing = False
-    if request.method == "POST":
-        social_distancing = True
-    return social_distancing
+    distancing = Distancing.objects.first()
+    toggle_distancing = Distancing.toggle_distancing
+    return 

@@ -58,8 +58,6 @@ class User(PermissionsMixin, AbstractBaseUser):
 
     def __str__(self):
         return self.username
-        
-
 
 class ClubRepresentative(models.Model):
     club_rep_id = models.CharField(max_length=6, null=True, unique=True)
@@ -67,7 +65,6 @@ class ClubRepresentative(models.Model):
     last_name = models.CharField(max_length=50, null=False, blank=False)
     date_of_birth = models.DateField()
     password = models.CharField(max_length=8, null=True, unique=True)
-
 
 
 class UniversityClub(models.Model):
@@ -143,3 +140,6 @@ class Cost(models.Model):
     child_cost = models.FloatField(null=False, blank=False)
     club_discount = models.FloatField(validators=[MinValueValidator(0.0), MaxValueValidator(1.0)], null=False, blank=False)
     student_discount = models.FloatField(validators=[MinValueValidator(0.0), MaxValueValidator(1.0)], null=False, blank=False)
+
+class Distancing(models.Model):
+    toggle_distancing = models.BooleanField(null=False, default=False)
