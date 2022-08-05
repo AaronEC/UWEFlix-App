@@ -8,32 +8,45 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>UWEflix</title>
     <link rel="stylesheet" href="{% static 'assets/style.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/style.css' %}">
     <script src="https://unpkg.com/ionicons@5.4.0/dist/ionicons.js"></script>
 </head>
-<body class="bg-black text-gray-100">
-    <nav class="flex justify-between items-center py-3 px-4 fixed w-full z-50">
-        <div class="w-6/12">
-            <img src="{% static 'assets/uweflix.png' %}" alt="logo" class="w-5/12 md:w-2/12">
+<body class="flex flex-col min-h-screen bg-black text-gray-100" style="max-height: 100px;">
+    <nav class="flex justify-between items-center py-3 px-4 fixed w-full z-50 bg-black ">
+        <div style="margin: 0px; padding 0px; width: 94px;">
+            <a href="/">
+            <img src="{% static 'assets/uweflix.png' %}" alt="logo" style="width:94px;">
+            </a>
         </div>
 
+        <h4 class="flex flex-wrap justify-center items-center font-medium text-3xl my-4 text-gray-100" style="padding: 20px; margin: 10px;">
+            UWE Movie Magic!
+        </h4>
+
         <div>
-            <a href="login.html" class='bg-primary_red py-1 px-3 text-white md:text-lg rounded-md'>
+            {% if request.user.is_authenticated %}
+            <a href="{% url 'account_logout' %}" class='bg-primary_red py-1 px-3 text-white md:text-lg rounded-md'>
+                Logout
+            </a>
+            {% else %}
+            <a href="{% url 'account_login' %}" class='bg-primary_red py-1 px-3 text-white md:text-lg rounded-md'>
                 Sign In 
             </a>
+            {% endif %}
         </div>
     </nav>
     
     {% block content %}
 
     {% endblock content %}
-
+{% comment %} 
     <footer class=" px-5 py-10 ">
         <ul class="flex justify-between items-center">
             
-            <li>&copy; All Right Reserved | 2022</li>
+            <li>&copy; All Rights Reserved | 2022</li>
             <li> UWEFlix</li>
             <li>By: Aaron Cardwell - Group 21</li>
         </ul>
-    </footer>
+    </footer> {% endcomment %}
 </body>
 </html>
