@@ -1,3 +1,5 @@
+<a name="readme-top"></a>
+
 <!-- PROJECT LOGO -->
   <h3 align="center">UWEFlix</h3>
 
@@ -28,11 +30,9 @@
       </ul>
     </li>
     <li><a href="#usage">Usage</a></li>
-    <li><a href="#roadmap">Roadmap</a></li>
-    <li><a href="#contributing">Contributing</a></li>
+    <li><a href="#contributors">Contributors</a></li>
     <li><a href="#license">License</a></li>
     <li><a href="#contact">Contact</a></li>
-    <li><a href="#acknowledgments">Acknowledgments</a></li>
   </ol>
 </details>
 
@@ -143,7 +143,7 @@ Please see the project in action using the screenshots below.
 
 Also contributed to this project:
 
-Ollie Latham (Developer) 
+Ollie Latham (Developer) <br />
 Charlie Saunders (Developer)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
