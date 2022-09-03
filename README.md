@@ -6,7 +6,7 @@
   <p align="center">
     An online cinema booking system.
     <br />
-    <a href="default.asp"><img src="https://aaroncardwell.dev/images/flix/video_template.jpg" width="412" alt="VideoLogo"></a>
+    <a href="https://www.youtube.com/watch?v=K8lKLx9CCwY"><img src="https://aaroncardwell.dev/images/flix/video_template.jpg" width="412" alt="VideoLogo"></a>
   </p>
 </div>
 
