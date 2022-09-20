@@ -1,10 +1,11 @@
+
 <a name="readme-top"></a>
 
 <!-- PROJECT LOGO -->
   <h3 align="center">UWEFlix</h3>
 
   <p align="center">
-    An online cinema booking system.
+    An online cinema booking and ticket sales portal.
     <br />
     <a href="https://www.youtube.com/watch?v=K8lKLx9CCwY"><img src="https://aaroncardwell.dev/images/flix/video_template.jpg" width="412" alt="VideoLogo"></a>
   </p>
@@ -41,14 +42,13 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-UWEFlix
-
-  
 The system is an online portal, for a university cinema, which allows tickets for specific screenings to be purchased by individual students, or in bulk by university clubs or societies.
 
 Films, screenings and ticket price etc can be managed by staff accounts with elevated access levels.
 
-Built with a web based frontend, linked to a Python backend via the Django API. Tickets, screenings and films are dynamically generated from entries created in an SQL database.
+Built with a web based frontend, linked to a Python backend via the Django API. Tickets, screenings and films are dynamically generated from entries, added by cinema staff with specific access levels, in an SQL database.
+
+The web portal features full user account registration and authorisation, including password strength checks, valid email checks and much more. 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -58,15 +58,32 @@ Built with a web based frontend, linked to a Python backend via the Django API. 
 
 The UWEFlix project was built by an agile team of three members, over a 12 week period, using the scrum methodology. The following tools and frameworks were used.
 
-
 * [![Python][Python]][Python-url]
 * [![Django][Django]][Django-url]
 * [![Bootstrap][Bootstrap.com]][Bootstrap-url]
 * [![HTML][HTML]][HTML-url]
 * [![Docker][Docker]][Docker-url]
 * [![JS][JS]][JS-url]
-* [![Angular][Angular.io]][Angular-url]
+* [![sql][sql]][sql-url]
 * [![AllAuth][AllAuth]][AllAuth-url]
+
+<!-- MARKDOWN LINKS & IMAGES -->
+[Python]: https://img.shields.io/badge/python-3.9.8-000000?style=for-the-badge&logo=python&logoColor=white
+[Python-url]: https://www.python.org/
+[Django]: https://img.shields.io/badge/Django-4.0.7-000000?style=for-the-badge&logo=django&logoColor=white
+[Django-url]: https://www.djangoproject.com/
+[HTML]: https://img.shields.io/badge/HTML-5.0-000000?style=for-the-badge&logo=appveyor&logoColor=white
+[HTML-url]:https://www.w3schools.com/html/
+[sql]: https://img.shields.io/badge/SQL-20_c_R3-000000?style=for-the-badge&logo=appveyor&logoColor=white
+[sql-url]: https://angular.io/
+[Docker]: https://img.shields.io/badge/Docker-20.10.11-000000?style=for-the-badge&logo=docker&logoColor=white
+[Docker-url]: https://www.docker.com/
+[AllAuth]: https://img.shields.io/badge/AllAuth-0.50.0-000000?style=for-the-badge&logo=django&logoColor=white
+[AllAuth-url]: https://laravel.com
+[Bootstrap.com]: https://img.shields.io/badge/Bootstrap-5.2.1-000000?style=for-the-badge&logo=bootstrap&logoColor=white
+[Bootstrap-url]: https://getbootstrap.com
+[JS]: https://img.shields.io/badge/JavaScript-ES2022-000000?style=for-the-badge&logo=javascript&logoColor=white
+[JS-url]: https://www.javascript.com/
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -75,11 +92,10 @@ The UWEFlix project was built by an agile team of three members, over a 12 week 
 <!-- GETTING STARTED -->
 ## Getting Started
 
-To get a local copy up and running follow these simple steps.
+To get a local copy of the app up and running and try it for yourself, follow these simple steps.
 
 ### Prerequisites
 
-This is an example of how to list things you need to use the software and how to install them.
 * Django
 * Django AllAuth
  ```sh
@@ -88,8 +104,6 @@ pip install django-allauth
   ```
 
 ### Installation
-
-_Below is an example of how you can instruct your audience on installing and setting up your app. This template doesn't rely on any external dependencies or services._
 
 1. Clone the repo
    ```sh
@@ -167,37 +181,3 @@ Aaron Cardwell - [LinkedIn](https://www.linkedin.com/in/aaronecardwell/) - aaron
 Project Link: [https://github.com/AaronEC/UWEFlix-App](https://github.com/AaronEC/UWEFlix-App)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
-
-<!-- MARKDOWN LINKS & IMAGES -->
-<!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[contributors-shield]: https://img.shields.io/github/contributors/othneildrew/Best-README-Template.svg?style=for-the-badge
-[contributors-url]: https://github.com/othneildrew/Best-README-Template/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/othneildrew/Best-README-Template.svg?style=for-the-badge
-[forks-url]: https://github.com/othneildrew/Best-README-Template/network/members
-[stars-shield]: https://img.shields.io/github/stars/othneildrew/Best-README-Template.svg?style=for-the-badge
-[stars-url]: https://github.com/othneildrew/Best-README-Template/stargazers
-[issues-shield]: https://img.shields.io/github/issues/othneildrew/Best-README-Template.svg?style=for-the-badge
-[issues-url]: https://github.com/othneildrew/Best-README-Template/issues
-[license-shield]: https://img.shields.io/github/license/othneildrew/Best-README-Template.svg?style=for-the-badge
-[license-url]: https://github.com/othneildrew/Best-README-Template/blob/master/LICENSE.txt
-[linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
-[linkedin-url]: https://linkedin.com/in/othneildrew
-[product-screenshot]: images/screenshot.png
-[Python]: https://img.shields.io/badge/python-000000?style=for-the-badge&logo=python&logoColor=white
-[Python-url]: https://www.python.org/
-[Django]: https://img.shields.io/badge/Django-20232A?style=for-the-badge&logo=django&logoColor=61DAFB
-[Django-url]: https://www.djangoproject.com/
-[HTML]: https://img.shields.io/badge/HTML-35495E?style=for-the-badge&logo=appveyor&logoColor=4FC08D
-[HTML-url]:https://www.w3schools.com/html/
-[Angular.io]: https://img.shields.io/badge/SQL-35495E?style=for-the-badge&logo=sql&logoColor=4FC08D
-[Angular-url]: https://angular.io/
-[Docker]: https://img.shields.io/badge/Docker-35495E?style=for-the-badge&logo=docker&logoColor=FF3E00
-[Docker-url]: https://www.docker.com/
-[AllAuth]: https://img.shields.io/badge/AllAuth-35495E?style=for-the-badge&logo=django&logoColor=4DE25D
-[AllAuth-url]: https://laravel.com
-[Bootstrap.com]: https://img.shields.io/badge/Bootstrap-563D7C?style=for-the-badge&logo=bootstrap&logoColor=white
-[Bootstrap-url]: https://getbootstrap.com
-[JS]: https://img.shields.io/badge/JavaScript-35495E?style=for-the-badge&logo=javascript&logoColor=4FC08D
-[JS-url]: https://www.javascript.com/
