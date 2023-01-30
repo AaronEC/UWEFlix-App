@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<main class='bg-primary_black min-h-screen w-full'>
+
+<section class="h-screen relative bg-no-repeat pb-8 pl-6 flex justify-left items-end bg-cover" style="background-image: url('{% static 'assets/Movielists.jpg' %}');">
+    <div class="bg-gray-900 py-8 px-4 rounded-md w-8/12" style="opacity: 0.9">
+        <h2 class="text-6xl font-semibold text-white my-4">
+            Welcome
+        </h2>
+        <p class=" font-medium text-white my-4">
+            Please choose from our selection of movies below. Here you will find more detail, showing times and ticket prices. All movies are age appropriate to your profile.
+        </p>
+        <div class="flex my-4">
+            <a href="#movies" class="flex items-center bg-black py-2 px-5 rounded-md">
+                <ion-icon name="play" class="text-2xl"></ion-icon>
+                <span id="movies" class="ml-3 font-medium">
+                    View Movies
+                </span>
+            </a>
+        </div>
+    </div>
+</section>
+<section class='bg-primary_black  min-h-screen flex justify-center p-20'>
+    <div class="p-8 w-10/12 relative" >
+        <h2 class="text-gray-200 text-2xl font-medium">
+            Currently Playing Movies:
+        </h2>
+        <div class="flex justify-center  items-center min-w-full  movie_lis">
+            {% for movie in movies %}
+            <a href="{% url 'uweflixapp:movie-detail' movie_id=movie.uuid %}" style=" margin: 10px;">
+                <div class="rounded-md cursor-pointer w-auto">
+                    <img src="{{ movie.poster.url }}" class="w-full h-full" alt="" style="max-width: 256px;">
+                </div>
+            </a>
+            {% endfor %}
+        
+        </div>
+    </div>
+</section>
+</main>
+<style>
+    html {
+        scroll-behavior: smooth;
+      }
+</style>
+<script>
+    const nav = document.querySelector('nav')
+
+    document.addEventListener("scroll",e=>{
+        
+        if(scrollY>200){
+            nav.classList.add('bg-gray-900')
+        
+        }else{
+            nav.classList.remove('bg-gray-900')
+            
+        }
+    })
+</script>
+{% endblock content %}

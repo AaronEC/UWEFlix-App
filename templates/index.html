@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<header class="min-h-screen bg-black min-h-screen max-h-screen bg-cover bg-center bg-no-repeat bg-opacity-95 showcase border-gray-600 border-b-8 flex justify-center items-center bg-no-repeat"  style="background-image: url('{% static 'assets/background.jpeg' %}');">
+    <div class="-my-30 z-10 h-full py-32 md:py-0 text-gray-100 text-center flex items-center flex-col">
+        <div class='md:w-1/2 flex justify-center items-center'>
+            <img src="{% static 'assets/friends.png' %}" class="object-scale-down" style="max-width: 50%;" alt="">
+        </div>
+        <h1 class="font-semibold text-4xl md:text-5xl w-10/12 md:w-3/4 text-center">
+            Enjoy movies with your friends and university clubs.
+        </h1>
+        <h3 class="text-xl md:text-xl py-5">
+            From classic indie films, to the latest blockbusters.
+        </h3>
+        <h4 class="text-sm md:text-lg pb-3">
+            Ready to watch? Enter your email to create or restart your membership.
+        </h4>
+
+        <div class="w-full flex justify-center">
+            <div class="flex justify-center items-center w-11/12 md:w-10/12">
+                <input type="email" name="" id="" placeholder="Email address" class="md:py-5 py-4 px-2 placeholder-gray-500 rounded-tl-sm rounded-bl-sm outline-none  text-gray-900 bg-gray-50 block w-8/12 md:w-3/4">
+                <button class="bg-primary_red font-medium md:font-normal md:w-1/4 flex justify-center items-center py-4 px-1 md:px-0 rounded-br-sm rounded-tr-sm md:text-2xl">
+                    <span>
+                        Get Started
+                    </span>
+                    <ion-icon name="chevron-forward-outline" class="text-2xl"></ion-icon>
+                </button>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- <section class='flex flex-col md:flex-row items-center border-gray-900 border-b-8' style="min-height: 70vh;">
+    <div class="md:w-1/2 flex flex-col justify-center text-center md:text-left p-5 md:p-10 ">
+        <h2 class="md:text-5xl text-4xl font-semibold mb-4">
+            Enjoy on your TV.
+        </h2>
+        <h5 class="md:text-xl text-lg">
+            Watch on Smart TVs, Playstation, Xbox, Chromecast, Apple TV, Blu-ray players, and more.
+        </h5>
+    </div>
+    <div class='md:w-1/2 flex justify-center items-center'>
+        <img src="assets/tv.png" class="w-8/12" alt="">
+    </div>
+</section> -->
+
+<section class='flex flex-col md:flex-row items-center border-gray-900 border-b-8' style="min-height: 0vh;">
+    
+</section>
+
+<section class='flex flex-col md:flex-row items-center border-gray-900 border-b-8' style="min-height: 45vh;">
+    <div class='md:w-1/2 flex justify-center items-center order-2'>
+        <img src="{% static 'assets/mobile.jpg' %}" class="w-8/12" alt="">
+    </div>
+
+    <div class="md:w-1/2 flex flex-col justify-center text-center md:text-left p-5 md:p-10">
+        <h2 class="md:text-5xl text-4xl font-semibold mb-4">
+            Book your tickets online.
+        </h2>
+        <h5 class="md:text-xl text-lg">
+            Save time at the cinema!
+        </h5>
+    </div>
+    
+</section>
+
+<section class='flex flex-col md:flex-row items-center border-gray-900 border-b-8' style="min-height: 70vh;">
+    <div class="md:w-1/2 flex flex-col justify-center text-center md:text-left p-5 md:p-10">
+        <h2 class="md:text-5xl text-4xl font-semibold mb-4">
+            Bring your kids to our special screenings.
+        </h2>
+        <h5 class="md:text-xl text-lg">
+            Grab yourself some extra study time and send your kids on adventures with their favorite characters in a supervised space made just for them!
+        </h5>
+    </div>
+    <div class='md:w-1/2 flex justify-center items-center'>
+        <img src="{% static 'assets/kid.png' %}" class="w-8/12" alt="">
+    </div>
+</section>
+
+{% endblock content %}
+
+</body>
+</html>

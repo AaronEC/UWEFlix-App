@@ -1,0 +1,118 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<main class='bg-primary_black min-h-screen w-full'>
+    <section class="h-screen relative bg-no-repeat pb-8 pl-6 flex justify-left items-end bg-cover" style="background-image: url('{{ movie.banner.url }}');">
+        <iframe id="player" width="100%" height="100%" src="{{movie.trailer_link}}?autoplay=1&mute=1&controls=0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; modestbranding; clipboard-write; encrypted-media; gyroscope;" style="position: absolute; top: 0; left: 0; overflow: hidden; opacity: 0;"></iframe>
+        <div id="showings" class="bg-gray-900 py-8 px-4 rounded-md w-8/12" style="position:absolute; z-index:2; opacity: 0.9">
+            <h2 class="text-6xl font-semibold text-white my-4 " style="font-weight: bolder;">
+                {{ movie.title }}
+            </h2>
+            <p class="font-medium text-white my-4">
+                {{ movie.description }}
+            </p>
+            <div class="flex my-4">
+                <a href="#showings" class="flex items-center bg-black py-2 px-5 rounded-md">
+                    <ion-icon name="checkbox-outline" class="text-2xl"></ion-icon>
+                    <span class="ml-3 font-medium">
+                        View Showings
+                    </span>
+                </a>
+            </div>
+        </div>
+    </section> 
+    
+    <section class='bg-primary_black  min-h-screen flex justify-center p-20'>
+        <div class="p-8 w-10/12 relative" >
+            <h2 class="text-gray-200 text-2xl font-medium">
+                Current Showings for this Movie:
+            </h2>
+            
+                {% for showing in showings %}
+                <div style="position: relative; width: 100%; columns: 100px 4; margin: 30px; margin-left: 0px; margin-right: 0px;"> 
+                    <a class="flex items-center bg-white py-2 px-5 rounded-md" style="color: black;">
+                        <ion-icon name="time" class="text-2xl"></ion-icon>
+                        <span class="ml-3 font-medium">
+                            {{ showing.date }}
+                        </span>
+                    </a>
+                    <a class="flex items-center bg-white py-2 px-5 rounded-md" style="color: black; margin-right: 10px;">
+                        <ion-icon name="tv" class="text-2xl"></ion-icon>
+                        <span class="ml-3 font-medium">
+                            Screen: {{ showing.screen }}
+                        </span>
+                    </a>
+                    <a class="flex items-center bg-white py-2 px-5 rounded-md" style="color: black; margin-right: 10px;">
+                        <span class="ml-3 font-medium">
+                            £{{ showing.price }}
+                        </span>
+                    </a>
+                    <a href="{% url 'uweflixapp:seat-list' showing_id=showing.uuid %}" class="flex items-center bg-primary_red py-2 px-5 rounded-md" style="margin-right: 10px;">
+                        <ion-icon name="checkbox-outline" class="text-2xl"></ion-icon>
+                        <span class="ml-3 font-medium">
+                            Book Tickets
+                        </span>
+                    </a>
+                </div>
+                {% endfor %}
+
+        </div>
+    </section>
+    
+</main>
+<style>
+    html {
+        scroll-behavior: smooth;
+      }
+</style>
+<script>
+    const nav = document.querySelector('nav')
+
+    document.addEventListener("scroll",e=>{
+        
+        if(scrollY>200){
+            nav.classList.add('bg-gray-900')
+        
+        }else{
+            nav.classList.remove('bg-gray-900')
+            
+        }
+    })
+
+    //Fade video in and out.
+    var opacity = 0;
+    var intervalID = 0;
+    window.onload = fadeIn();
+
+    function fadeIn() {
+        setTimeout(function(){ setInterval(show, 30); }, 3000);
+    }
+    function fadeOut() {
+        setTimeout(function(){ setInterval(hide, 30); }, 60000);
+    }
+
+    function show() {
+        var body = document.getElementById("player");
+        opacity = Number(window.getComputedStyle(body)
+                         .getPropertyValue("opacity"));
+        if (opacity < 1) {
+            opacity = opacity + 0.01;
+            body.style.opacity = opacity
+        }
+        fadeOut();
+        return 0;
+    }
+
+    function hide() {
+        var body = document.getElementById("player");
+        opacity = Number(window.getComputedStyle(body)
+                         .getPropertyValue("opacity"));
+        if (opacity > 0.00) {
+            opacity = opacity - 0.01;
+            body.style.opacity = opacity
+        }
+        
+    }
+</script>
+{% endblock content %}
